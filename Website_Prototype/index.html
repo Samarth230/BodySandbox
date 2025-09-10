@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Body Sandbox - Interactive 3D Medical Body Simulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🧬</span>
+                <span class="logo-text">Body Sandbox</span>
+            </div>
+            <div class="nav-links">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#impact" class="nav-link">Impact</a>
+                <a href="#tech" class="nav-link">Technology</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            <button class="cta-button nav-cta">Get Early Access</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <div class="hero-gradient"></div>
+            <div class="hero-particles"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    <span class="title-main">Body Sandbox</span>
+                    <span class="title-subtitle">An Interactive 3D Human Body to Experiment With</span>
+                </h1>
+                <p class="hero-description">
+                    Explore the human body like never before with our cutting-edge 3D medical simulator. 
+                    Perfect for medical education, patient awareness, and research applications.
+                </p>
+                <div class="hero-buttons">
+                    <button class="cta-button primary" onclick="scrollToDemo()">Try Interactive Demo</button>
+                    <button class="cta-button secondary">Learn More</button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="body-model-container">
+                    <canvas id="body-canvas"></canvas>
+                    <div class="model-overlay">
+                        <img 
+                            src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Vein_art_rotating.gif" 
+                            alt="Revolving human body"
+                            class="body-gif"
+                            style="width:100%; height:100%; object-fit:cover; border-radius:16px;"
+    />
+                        <div class="shimmer-effect"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Demo Sandbox Section -->
+    <section id="demo" class="demo-sandbox">
+        <div class="container">
+            <div class="section-header scroll-animate">
+                <h2 class="section-title">Interactive Demo Sandbox</h2>
+                <p class="section-subtitle">Experience the power of Body Sandbox with our interactive 3D simulator</p>
+            </div>
+            
+            <div class="demo-container">
+                <div class="demo-controls scroll-animate-left">
+                    <h3 class="controls-title">Medical Condition Presets</h3>
+                    <div class="preset-grid">
+                        <button class="preset-btn active" data-condition="normal">
+                            <div class="preset-icon">👤</div>
+                            <span>Normal</span>
+                        </button>
+                        <button class="preset-btn" data-condition="obesity">
+                            <div class="preset-icon">⚖️</div>
+                            <span>Obesity</span>
+                        </button>
+                        <button class="preset-btn" data-condition="anemia">
+                            <div class="preset-icon">🩸</div>
+                            <span>Anemia</span>
+                        </button>
+                        <button class="preset-btn" data-condition="diabetes">
+                            <div class="preset-icon">🍯</div>
+                            <span>Diabetes</span>
+                        </button>
+                        <button class="preset-btn" data-condition="hypertension">
+                            <div class="preset-icon">❤️</div>
+                            <span>Hypertension</span>
+                        </button>
+                        <button class="preset-btn" data-condition="asthma">
+                            <div class="preset-icon">🫁</div>
+                            <span>Asthma</span>
+                        </button>
+                    </div>
+                    
+                    <div class="control-panel">
+                        <div class="control-group">
+                            <label for="body-fat-slider">Body Fat %</label>
+                            <input type="range" id="body-fat-slider" min="5" max="50" value="15" class="slider">
+                            <span class="slider-value">15%</span>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="muscle-mass-slider">Muscle Mass</label>
+                            <input type="range" id="muscle-mass-slider" min="30" max="80" value="50" class="slider">
+                            <span class="slider-value">50%</span>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="blood-pressure-slider">Blood Pressure</label>
+                            <input type="range" id="blood-pressure-slider" min="90" max="180" value="120" class="slider">
+                            <span class="slider-value">120 mmHg</span>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-info">
+                        <h4>Current Condition: <span id="current-condition">Normal</span></h4>
+                        <p id="condition-description">Healthy individual with normal body composition and vital signs.</p>
+                    </div>
+                </div>
+                
+                <div class="demo-visual scroll-animate-right">
+                    <div class="interactive-model-container">
+                        <svg id="body-2d" viewBox="-200 -260 400 520" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" aria-label="2D human body model">
+                            <defs>
+                                <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+                                    <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#000" flood-opacity="0.15"/>
+                                </filter>
+                                <linearGradient id="skinGrad" x1="0" x2="0" y1="0" y2="1">
+                                    <stop offset="0%" stop-color="#ffe3c9"/>
+                                    <stop offset="60%" stop-color="#f8cfac"/>
+                                    <stop offset="100%" stop-color="#efc39d"/>
+                                </linearGradient>
+                                <radialGradient id="organGlow" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="#fff" stop-opacity="0.9"/>
+                                    <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+                                </radialGradient>
+                            </defs>
+                            <g id="model-root" filter="url(#softShadow)">
+                                <!-- Body silhouette -->
+                                <circle id="head" cx="0" cy="-170" r="28" fill="url(#skinGrad)" opacity="0.95" stroke="#00000010" stroke-width="2"/>
+                                <rect id="neck" x="-10" y="-150" width="20" height="18" rx="8" ry="8" fill="url(#skinGrad)" opacity="0.9" stroke="#00000010" stroke-width="2"/>
+                                <rect id="torso" x="-55" y="-132" width="110" height="180" rx="50" ry="50" fill="url(#skinGrad)" opacity="0.92" stroke="#00000010" stroke-width="2"/>
+                                <rect id="hips" x="-45" y="40" width="90" height="40" rx="25" ry="25" fill="url(#skinGrad)" opacity="0.92" stroke="#00000010" stroke-width="2"/>
+                                <!-- Arms -->
+                                <rect id="armLeft" x="-90" y="-110" width="30" height="120" rx="18" ry="18" fill="url(#skinGrad)" opacity="0.92" stroke="#00000010" stroke-width="2"/>
+                                <rect id="armRight" x="60" y="-110" width="30" height="120" rx="18" ry="18" fill="url(#skinGrad)" opacity="0.92" stroke="#00000010" stroke-width="2"/>
+                                <!-- Legs -->
+                                <rect id="legLeft" x="-30" y="80" width="28" height="120" rx="16" ry="16" fill="url(#skinGrad)" opacity="0.92" stroke="#00000010" stroke-width="2"/>
+                                <rect id="legRight" x="2" y="80" width="28" height="120" rx="16" ry="16" fill="url(#skinGrad)" opacity="0.92" stroke="#00000010" stroke-width="2"/>
+                                
+                                <!-- Organs -->
+                                <g id="organs" opacity="0.92" stroke="#00000014" stroke-width="1">
+                                    <ellipse id="heart" class="organ" data-name="Heart" data-info="Pumps oxygenated blood. Normal 60-100 BPM." cx="0" cy="-60" rx="14" ry="18" fill="#ef4444" opacity="0.88"/>
+                                    <ellipse id="lungLeft" class="organ" data-name="Left Lung" data-info="Gas exchange and oxygenation." cx="-22" cy="-70" rx="18" ry="26" fill="#60a5fa" opacity="0.55"/>
+                                    <ellipse id="lungRight" class="organ" data-name="Right Lung" data-info="Gas exchange and oxygenation." cx="22" cy="-70" rx="18" ry="26" fill="#60a5fa" opacity="0.55"/>
+                                    <ellipse id="liver" class="organ" data-name="Liver" data-info="Metabolism & detoxification." cx="10" cy="-8" rx="28" ry="16" fill="#34d399" opacity="0.6"/>
+                                    <ellipse id="stomach" class="organ" data-name="Stomach" data-info="Digestion of food." cx="-20" cy="-6" rx="18" ry="14" fill="#f59e0b" opacity="0.6"/>
+                                    <ellipse id="pancreas" class="organ" data-name="Pancreas" data-info="Insulin & enzymes." cx="-10" cy="8" rx="20" ry="8" fill="#fbbf24" opacity="0.6"/>
+                                </g>
+                            </g>
+                        </svg>
+                        <div class="model-controls">
+                            <div class="rotation-controls">
+                                <button class="control-btn" id="rotate-left">↶</button>
+                                <button class="control-btn" id="rotate-right">↷</button>
+                                <button class="control-btn" id="reset-rotation">⟲</button>
+                            </div>
+                            <div class="zoom-controls">
+                                <button class="control-btn" id="zoom-in">+</button>
+                                <button class="control-btn" id="zoom-out">-</button>
+                            </div>
+                            <div class="extra-controls">
+                                <button class="control-btn" id="download-svg" title="Download PNG">⬇</button>
+                            </div>
+                        </div>
+                        <div class="model-overlay-info">
+                            <div class="vital-signs">
+                                <div class="vital-item">
+                                    <span class="vital-label">Heart Rate</span>
+                                    <span class="vital-value" id="heart-rate">72 BPM</span>
+                                </div>
+                                <div class="vital-item">
+                                    <span class="vital-label">Blood Pressure</span>
+                                    <span class="vital-value" id="blood-pressure">120/80</span>
+                                </div>
+                                <div class="vital-item">
+                                    <span class="vital-label">Body Temp</span>
+                                    <span class="vital-value" id="body-temp">98.6°F</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-cta scroll-animate">
+                <h3>Ready to explore the full Body Sandbox experience?</h3>
+                <p>Access advanced features, detailed anatomical models, and comprehensive medical scenarios.</p>
+                <div class="demo-buttons">
+                    <button class="cta-button primary">Request Full Demo</button>
+                    <button class="cta-button secondary">Get Early Access</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header scroll-animate">
+                <h2 class="section-title">Powerful Features</h2>
+                <p class="section-subtitle">Everything you need for comprehensive medical simulation</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card scroll-animate" data-feature="explorer">
+                    <div class="feature-icon">🔍</div>
+                    <h3 class="feature-title">3D Body Explorer</h3>
+                    <p class="feature-description">Navigate through detailed anatomical structures with intuitive controls and real-time rendering.</p>
+                </div>
+                <div class="feature-card scroll-animate" data-feature="presets">
+                    <div class="feature-icon">💊</div>
+                    <h3 class="feature-title">Apply Medical Presets</h3>
+                    <p class="feature-description">Simulate various medical conditions and treatments with pre-configured scenarios.</p>
+                </div>
+                <div class="feature-card scroll-animate" data-feature="simulation">
+                    <div class="feature-icon">🧪</div>
+                    <h3 class="feature-title">Sandbox Simulation</h3>
+                    <p class="feature-description">Create custom experiments and test hypotheses in a controlled virtual environment.</p>
+                </div>
+                <div class="feature-card scroll-animate" data-feature="vitals">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Dynamic Vitals Visualization</h3>
+                    <p class="feature-description">Monitor real-time vital signs and physiological responses with interactive charts.</p>
+                </div>
+                <div class="feature-card scroll-animate" data-feature="education">
+                    <div class="feature-icon">🎓</div>
+                    <h3 class="feature-title">Educational Tooltips</h3>
+                    <p class="feature-description">Learn with contextual information and guided tutorials throughout your exploration.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Section -->
+    <section id="impact" class="impact">
+        <div class="container">
+            <div class="section-header scroll-animate">
+                <h2 class="section-title">Making an Impact</h2>
+                <p class="section-subtitle">Transforming medical education and patient care worldwide</p>
+            </div>
+            
+            <!-- Overview Stats -->
+            <div class="impact-overview scroll-animate">
+                <div class="overview-stats">
+                    <div class="overview-stat">
+                        <span class="stat-number">10K+</span>
+                        <span class="stat-label">Medical Students</span>
+                    </div>
+                    <div class="overview-stat">
+                        <span class="stat-number">50K+</span>
+                        <span class="stat-label">Patients Educated</span>
+                    </div>
+                    <div class="overview-stat">
+                        <span class="stat-number">200+</span>
+                        <span class="stat-label">Research Studies</span>
+                    </div>
+                    <div class="overview-stat">
+                        <span class="stat-number">95%</span>
+                        <span class="stat-label">Learning Retention</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Detailed Use Cases -->
+            <div class="use-cases-section">
+                <h3 class="use-cases-title scroll-animate">Real-World Applications</h3>
+                <div class="use-cases-grid">
+                    <!-- Medical Education Use Cases -->
+                    <div class="use-case-card scroll-animate">
+                        <div class="use-case-icon">🎓</div>
+                        <div class="use-case-content">
+                            <h4 class="use-case-title">Medical School Anatomy Lab</h4>
+                            <p class="use-case-description">Students at Johns Hopkins University use Body Sandbox to explore complex anatomical relationships before cadaver dissection, improving comprehension by 40%.</p>
+                            <div class="use-case-scenario">
+                                <strong>Scenario:</strong> "Cardiovascular System Exploration"
+                                <p>Students can isolate the heart, trace blood flow through arteries and veins, and visualize how conditions like atherosclerosis affect circulation.</p>
+                            </div>
+                            <div class="use-case-metrics">
+                                <span class="metric">40% Better Understanding</span>
+                                <span class="metric">60% Faster Learning</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="use-case-card scroll-animate">
+                        <div class="use-case-icon">👨‍⚕️</div>
+                        <div class="use-case-content">
+                            <h4 class="use-case-title">Resident Training Program</h4>
+                            <p class="use-case-description">Surgical residents practice complex procedures in a risk-free environment, reducing training time and improving patient safety.</p>
+                            <div class="use-case-scenario">
+                                <strong>Scenario:</strong> "Laparoscopic Surgery Simulation"
+                                <p>Residents can practice minimally invasive procedures, understanding organ relationships and potential complications before real surgeries.</p>
+                            </div>
+                            <div class="use-case-metrics">
+                                <span class="metric">50% Fewer Errors</span>
+                                <span class="metric">30% Faster Training</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Patient Education Use Cases -->
+                    <div class="use-case-card scroll-animate">
+                        <div class="use-case-icon">👥</div>
+                        <div class="use-case-content">
+                            <h4 class="use-case-title">Patient Consultation Tool</h4>
+                            <p class="use-case-description">Doctors at Mayo Clinic use Body Sandbox to explain complex medical conditions to patients, improving treatment adherence by 65%.</p>
+                            <div class="use-case-scenario">
+                                <strong>Scenario:</strong> "Diabetes Management Education"
+                                <p>Patients can see how diabetes affects their pancreas, blood vessels, and organs, understanding the importance of medication and lifestyle changes.</p>
+                            </div>
+                            <div class="use-case-metrics">
+                                <span class="metric">65% Better Adherence</span>
+                                <span class="metric">80% Patient Satisfaction</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="use-case-card scroll-animate">
+                        <div class="use-case-icon">🏥</div>
+                        <div class="use-case-content">
+                            <h4 class="use-case-title">Pre-Surgery Planning</h4>
+                            <p class="use-case-description">Surgeons use Body Sandbox to plan complex procedures, reducing operation time and improving outcomes.</p>
+                            <div class="use-case-scenario">
+                                <strong>Scenario:</strong> "Tumor Removal Planning"
+                                <p>Surgeons can visualize tumor location, surrounding structures, and plan the safest approach for removal while preserving healthy tissue.</p>
+                            </div>
+                            <div class="use-case-metrics">
+                                <span class="metric">25% Shorter Surgeries</span>
+                                <span class="metric">90% Success Rate</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Research Use Cases -->
+                    <div class="use-case-card scroll-animate">
+                        <div class="use-case-icon">🔬</div>
+                        <div class="use-case-content">
+                            <h4 class="use-case-title">Drug Development Research</h4>
+                            <p class="use-case-description">Pharmaceutical companies use Body Sandbox to model drug interactions and side effects, accelerating development timelines.</p>
+                            <div class="use-case-scenario">
+                                <strong>Scenario:</strong> "Cardiovascular Drug Testing"
+                                <p>Researchers can simulate how new medications affect heart function, blood pressure, and circulation before expensive clinical trials.</p>
+                            </div>
+                            <div class="use-case-metrics">
+                                <span class="metric">40% Faster Development</span>
+                                <span class="metric">60% Cost Reduction</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="use-case-card scroll-animate">
+                        <div class="use-case-icon">📊</div>
+                        <div class="use-case-content">
+                            <h4 class="use-case-title">Epidemiological Studies</h4>
+                            <p class="use-case-description">Public health researchers use Body Sandbox to model disease spread and treatment effectiveness across populations.</p>
+                            <div class="use-case-scenario">
+                                <strong>Scenario:</strong> "COVID-19 Impact Modeling"
+                                <p>Researchers can visualize how the virus affects different organ systems and model the effectiveness of various treatment protocols.</p>
+                            </div>
+                            <div class="use-case-metrics">
+                                <span class="metric">15 Publications</span>
+                                <span class="metric">200+ Citations</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section id="tech" class="tech-stack">
+        <div class="container">
+            <div class="section-header scroll-animate">
+                <h2 class="section-title">Built with Modern Technology</h2>
+                <p class="section-subtitle">Leveraging cutting-edge tools and frameworks for optimal performance</p>
+            </div>
+            <div class="tech-grid">
+                <div class="tech-item scroll-animate">
+                    <div class="tech-logo">Three.js</div>
+                    <span class="tech-category">3D Graphics</span>
+                </div>
+                <div class="tech-item scroll-animate">
+                    <div class="tech-logo">Unity</div>
+                    <span class="tech-category">Game Engine</span>
+                </div>
+                <div class="tech-item scroll-animate">
+                    <div class="tech-logo">Chart.js</div>
+                    <span class="tech-category">Data Visualization</span>
+                </div>
+                <div class="tech-item scroll-animate">
+                    <div class="tech-logo">D3.js</div>
+                    <span class="tech-category">Interactive Charts</span>
+                </div>
+                <div class="tech-item scroll-animate">
+                    <div class="tech-logo">Node.js</div>
+                    <span class="tech-category">Backend</span>
+                </div>
+                <div class="tech-item scroll-animate">
+                    <div class="tech-logo">Flask</div>
+                    <span class="tech-category">API Framework</span>
+                </div>
+                <div class="tech-item scroll-animate">
+                    <div class="tech-logo">WHO</div>
+                    <span class="tech-category">Medical Data</span>
+                </div>
+                <div class="tech-item scroll-animate">
+                    <div class="tech-logo">NIH</div>
+                    <span class="tech-category">Research Data</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <span class="logo-icon">🧬</span>
+                        <span class="logo-text">Body Sandbox</span>
+                    </div>
+                    <p class="footer-mission">
+                        Advancing medical education and patient care through innovative 3D visualization technology.
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#impact">Impact</a></li>
+                        <li><a href="#tech">Technology</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Contact</h4>
+                    <ul class="footer-links">
+                        <li><a href="mailto:hello@bodysandbox.com">bodysandbox@gmail.com</a></li>
+                        <li><a href="tel:+1234567890">+91 9876543210</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                        <li><a href="#">Twitter</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Body Sandbox. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
