@@ -1079,15 +1079,13 @@ class InteractiveDemo {
         document.getElementById('blood-pressure').textContent = data.bloodPressure + '/80';
         document.getElementById('body-temp').textContent = data.bodyTemp + '°F';
         
-        // Update sliders
-        document.getElementById('body-fat-slider').value = data.bodyFat;
-        document.getElementById('muscle-mass-slider').value = data.muscleMass;
-        document.getElementById('blood-pressure-slider').value = data.bloodPressure;
-        
-        // Update slider values
-        document.querySelector('#body-fat-slider').nextElementSibling.textContent = data.bodyFat + '%';
-        document.querySelector('#muscle-mass-slider').nextElementSibling.textContent = data.muscleMass + '%';
-        document.querySelector('#blood-pressure-slider').nextElementSibling.textContent = data.bloodPressure + ' mmHg';
+        // Update sliders and their display spans
+        const bf = document.getElementById('body-fat-slider');
+        const mm = document.getElementById('muscle-mass-slider');
+        const bp = document.getElementById('blood-pressure-slider');
+        if (bf) { bf.value = data.bodyFat; const span = document.querySelector('.slider-value[data-for="body-fat-slider"]'); if (span) span.textContent = data.bodyFat + '%'; }
+        if (mm) { mm.value = data.muscleMass; const span = document.querySelector('.slider-value[data-for="muscle-mass-slider"]'); if (span) span.textContent = data.muscleMass + '%'; }
+        if (bp) { bp.value = data.bloodPressure; const span = document.querySelector('.slider-value[data-for="blood-pressure-slider"]'); if (span) span.textContent = data.bloodPressure + ' mmHg'; }
     }
     
     addEventListeners() {
@@ -1126,21 +1124,24 @@ class InteractiveDemo {
         // Slider controls
         document.getElementById('body-fat-slider').addEventListener('input', (e) => {
             const value = e.target.value;
-            e.target.nextElementSibling.textContent = value + '%';
+            const span = document.querySelector('.slider-value[data-for="body-fat-slider"]');
+            if (span) span.textContent = value + '%';
             // Update body appearance based on body fat
             this.updateBodyFat(parseInt(value));
         });
         
         document.getElementById('muscle-mass-slider').addEventListener('input', (e) => {
             const value = e.target.value;
-            e.target.nextElementSibling.textContent = value + '%';
+            const span = document.querySelector('.slider-value[data-for="muscle-mass-slider"]');
+            if (span) span.textContent = value + '%';
             // Update body appearance based on muscle mass
             this.updateMuscleMass(parseInt(value));
         });
         
         document.getElementById('blood-pressure-slider').addEventListener('input', (e) => {
             const value = e.target.value;
-            e.target.nextElementSibling.textContent = value + ' mmHg';
+            const span = document.querySelector('.slider-value[data-for="blood-pressure-slider"]');
+            if (span) span.textContent = value + ' mmHg';
             document.getElementById('blood-pressure').textContent = value + '/80';
         });
     }
@@ -1233,12 +1234,13 @@ class InteractiveDemo2D {
         this.zoom = 1;
         this.rotation = 0;
         this.conditionData = {
-            normal: { heart: 72, bp: '120/80', temp: '98.6°F', color: '#34d399', desc: 'Healthy state.' },
-            obesity: { heart: 85, bp: '140/90', temp: '99.1°F', color: '#f59e0b', desc: 'Higher fat distribution.' },
-            anemia: { heart: 95, bp: '100/80', temp: '97.8°F', color: '#ef4444', desc: 'Low oxygen capacity.' },
-            diabetes: { heart: 78, bp: '130/85', temp: '98.9°F', color: '#8b5cf6', desc: 'Metabolic changes.' },
-            hypertension: { heart: 88, bp: '160/100', temp: '99.0°F', color: '#dc2626', desc: 'Elevated blood pressure.' },
-            asthma: { heart: 82, bp: '115/80', temp: '98.7°F', color: '#06b6d4', desc: 'Respiratory impact.' },
+            // Also include slider targets for each condition
+            normal:       { heart: 72, bp: '120/80', temp: '98.6°F', color: '#34d399', desc: 'Healthy state.',       bodyFat: 15, muscle: 50, systolic: 120 },
+            obesity:      { heart: 85, bp: '140/90', temp: '99.1°F', color: '#f59e0b', desc: 'Higher fat distribution.', bodyFat: 35, muscle: 40, systolic: 140 },
+            anemia:       { heart: 95, bp: '100/80', temp: '97.8°F', color: '#ef4444', desc: 'Low oxygen capacity.',   bodyFat: 12, muscle: 45, systolic: 100 },
+            diabetes:     { heart: 78, bp: '130/85', temp: '98.9°F', color: '#8b5cf6', desc: 'Metabolic changes.',     bodyFat: 25, muscle: 45, systolic: 130 },
+            hypertension: { heart: 88, bp: '160/100', temp: '99.0°F', color: '#dc2626', desc: 'Elevated blood pressure.', bodyFat: 20, muscle: 48, systolic: 160 },
+            asthma:       { heart: 82, bp: '115/80', temp: '98.7°F', color: '#06b6d4', desc: 'Respiratory impact.',   bodyFat: 18, muscle: 47, systolic: 115 },
         };
         if (this.svg) {
             this.bindUI();
@@ -1253,6 +1255,22 @@ class InteractiveDemo2D {
                 document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 this.applyCondition(btn.dataset.condition);
+                // Also update sliders to match the chosen preset
+                const key = btn.dataset.condition;
+                const preset = this.conditionData[key];
+                const bf = document.getElementById('body-fat-slider');
+                const mm = document.getElementById('muscle-mass-slider');
+                const sp = document.getElementById('blood-pressure-slider');
+                const sync = (input) => {
+                    if (!input) return;
+                    const min = parseFloat(input.min) || 0;
+                    const max = parseFloat(input.max) || 100;
+                    const val = ((input.value - min) * 100) / (max - min);
+                    input.style.setProperty('--_val', `${val}%`);
+                };
+                if (bf && preset?.bodyFat != null) { bf.value = preset.bodyFat; const span = document.querySelector('.slider-value[data-for="body-fat-slider"]'); if (span) span.textContent = preset.bodyFat + '%'; sync(bf); }
+                if (mm && preset?.muscle != null) { mm.value = preset.muscle; const span = document.querySelector('.slider-value[data-for="muscle-mass-slider"]'); if (span) span.textContent = preset.muscle + '%'; sync(mm); }
+                if (sp && preset?.systolic != null) { sp.value = preset.systolic; const span = document.querySelector('.slider-value[data-for="blood-pressure-slider"]'); if (span) span.textContent = preset.systolic + ' mmHg'; this.updateBP(preset.systolic); sync(sp); }
             });
         });
         // Rotate and zoom
@@ -1274,17 +1292,50 @@ class InteractiveDemo2D {
         const fat = document.getElementById('body-fat-slider');
         if (fat) {
             setValueText(fat, `${fat.value}%`);
-            fat.addEventListener('input', e => { this.updateFat(parseInt(e.target.value)); setValueText(e.target, `${e.target.value}%`); });
+            const syncFill = (input) => {
+                const min = parseFloat(input.min) || 0;
+                const max = parseFloat(input.max) || 100;
+                const val = ((input.value - min) * 100) / (max - min);
+                input.style.setProperty('--_val', `${val}%`);
+            };
+            // init and on input
+            syncFill(fat);
+            fat.addEventListener('input', e => { this.updateFat(parseInt(e.target.value)); setValueText(e.target, `${e.target.value}%`); syncFill(e.target); });
         }
         const muscle = document.getElementById('muscle-mass-slider');
         if (muscle) {
             setValueText(muscle, `${muscle.value}%`);
-            muscle.addEventListener('input', e => { this.updateMuscle(parseInt(e.target.value)); setValueText(e.target, `${e.target.value}%`); });
+            const syncFillMuscle = (input) => {
+                const min = parseFloat(input.min) || 0;
+                const max = parseFloat(input.max) || 100;
+                const val = ((input.value - min) * 100) / (max - min);
+                input.style.setProperty('--_val', `${val}%`);
+            };
+            syncFillMuscle(muscle);
+            muscle.addEventListener('input', e => { this.updateMuscle(parseInt(e.target.value)); setValueText(e.target, `${e.target.value}%`); syncFillMuscle(e.target); });
         }
         const bp = document.getElementById('blood-pressure-slider');
         if (bp) {
             setValueText(bp, `${bp.value} mmHg`);
-            bp.addEventListener('input', e => { this.updateBP(parseInt(e.target.value)); setValueText(e.target, `${e.target.value} mmHg`); });
+            const syncFillBP = (input) => {
+                const min = parseFloat(input.min) || 0;
+                const max = parseFloat(input.max) || 100;
+                const val = ((input.value - min) * 100) / (max - min);
+                input.style.setProperty('--_val', `${val}%`);
+            };
+            syncFillBP(bp);
+            bp.addEventListener('input', e => { this.updateBP(parseInt(e.target.value)); setValueText(e.target, `${e.target.value} mmHg`); syncFillBP(e.target); });
+        }
+        // Ensure initial values reflect the current active preset (if any)
+        const activeBtn = document.querySelector('.preset-btn.active');
+        if (activeBtn) {
+            const k = activeBtn.dataset.condition;
+            const preset = this.conditionData[k];
+            if (preset) {
+                if (fat) { fat.value = preset.bodyFat; setValueText(fat, `${fat.value}%`); this.updateFat(preset.bodyFat); }
+                if (muscle) { muscle.value = preset.muscle; setValueText(muscle, `${muscle.value}%`); this.updateMuscle(preset.muscle); }
+                if (bp) { bp.value = preset.systolic; setValueText(bp, `${bp.value} mmHg`); this.updateBP(preset.systolic); }
+            }
         }
         // Drag to rotate
         let dragging = false, startX = 0;
