@@ -1369,14 +1369,17 @@ html {
 }
 
 /* Slider visual enhancements */
+/* Paint the filled track up to the thumb using a CSS variable that JS updates */
 .slider {
+    /* Default fallback at 50% so it looks okay before JS runs */
     background: linear-gradient(90deg, var(--primary-blue) 0%, var(--primary-blue) var(--_val, 50%), var(--gray-200) var(--_val, 50%));
 }
-.slider::-webkit-slider-thumb {
-    box-shadow: 0 6px 16px rgba(37,99,235,0.35);
-}
+.slider::-webkit-slider-thumb { box-shadow: 0 6px 16px rgba(37,99,235,0.35); }
 .slider:active::-webkit-slider-thumb { transform: scale(1.15); }
 .slider::-moz-range-thumb { box-shadow: 0 6px 16px rgba(37,99,235,0.35); }
+/* Firefox track fill */
+.slider::-moz-range-progress { background: var(--primary-blue); height: 6px; border-radius: 3px; }
+.slider::-moz-range-track { background: var(--gray-200); height: 6px; border-radius: 3px; }
 
 .fallback-body {
     display: flex;
