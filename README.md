@@ -1,7 +1,7 @@
-Body Sandbox — Medical Simulation Platform
+**Body Sandbox** — Medical Simulation Platform
 Body Sandbox is an interactive web-based simulation tool designed for visualizing and analyzing health parameters, medical conditions, and system effects in real time. Below are prototypes representing different stages and styles of the platform’s interface.
 
-Table of Contents
+**Table of Contents**
 Overview
 
 Features
@@ -16,10 +16,10 @@ Real-Time Anatomy Simulation
 
 Analytics & Monitoring Dashboard
 
-Overview
+**Overview**
 Body Sandbox enables users to adjust patient parameters, apply condition presets, simulate drugs or treatments, and monitor vital signs through an interactive 3D anatomy interface. The platform is built using Vue.js, modern charting libraries, and integrates real-time feedback mechanisms for an engaging medical educational experience.
 
-Features
+**Features**
 Adjustable health presets (Healthy, Obesity, Diabetes, Anemia, etc.)
 
 Real-time control of body parameters (age, body fat, blood sugar, blood pressure)
@@ -34,7 +34,7 @@ Export and data management tools
 
 Analytics dashboard for trends and system status
 
-Prototype Screens
+*Prototype Screens**
 1. Dark Mode Simulation Panel
 
 Focused on a dark theme for enhanced contrast and immersive simulation.
@@ -87,7 +87,7 @@ Status overview for systems and immediate health alerts (e.g., elevated glucose)
 
 Integrated auto-refresh and real-time feedback.
 
-Technology Stack
+**Technology Stack**
 Vue.js (core SPA framework)
 
 Vuex / Pinia (state management)
