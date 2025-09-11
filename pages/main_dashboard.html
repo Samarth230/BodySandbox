@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Main Dashboard - MedInsight AI</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fmedinsight1355back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+<body class="bg-gradient-to-br from-primary-50 to-secondary-50 min-h-screen font-body">
+    <!-- Header Section -->
+    <header class="glass-card border-b border-border-light sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+                        <i class="fas fa-heartbeat text-white text-lg"></i>
+                    </div>
+                    <h1 class="text-xl font-heading font-bold text-text-primary">Body Sandbox</h1>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="main_dashboard.html" class="text-primary font-semibold border-b-2 border-primary pb-1">Dashboard</a>
+                    <a href="3d_anatomy_viewer.html" class="text-text-secondary hover:text-primary transition-medical">3D Anatomy</a>
+                    <a href="health_analytics_dashboard.html" class="text-text-secondary hover:text-primary transition-medical">Analytics</a>
+                    <a href="patient_profile_management.html" class="text-text-secondary hover:text-primary transition-medical">Profiles</a>
+                    <a href="emergency_response_center.html" class="text-text-secondary hover:text-primary transition-medical">Emergency</a>
+                </nav>
+
+                <!-- Controls -->
+                <div class="flex items-center space-x-4">
+                    <button id="autoRefreshToggle" class="flex items-center space-x-2 px-3 py-2 bg-accent text-white rounded-lg hover:bg-accent-600 transition-medical">
+                        <i class="fas fa-sync-alt text-sm"></i>
+                        <span class="hidden sm:inline text-sm">Auto Refresh</span>
+                    </button>
+                    <button id="soundToggle" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-medical">
+                        <i class="fas fa-volume-up text-text-secondary"></i>
+                    </button>
+                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-white text-sm"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Emergency Alert Banner -->
+        <div id="emergencyAlert" class="hidden mb-6 p-4 bg-error-50 border-l-4 border-error rounded-lg">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-exclamation-triangle text-error text-xl pulse-critical"></i>
+                    <div>
+                        <h3 class="text-error font-semibold">Critical Alert</h3>
+                        <p class="text-error-500 text-sm">Patient vital signs require immediate attention</p>
+                    </div>
+                </div>
+                <button id="clearAlert" class="text-error hover:text-error-600 transition-medical">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Navigation Tiles -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-heading font-bold text-text-primary mb-4">Quick Access</h2>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <a href="3d_anatomy_viewer.html" class="glass-card p-4 rounded-medical hover:shadow-medical-lg transition-medical hover-lift group">
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-gradient-to-br from-primary to-primary-600 rounded-lg mx-auto mb-3 flex items-center justify-center group-hover:scale-105 transition-medical">
+                            <i class="fas fa-user-md text-white text-xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-text-primary text-sm">3D Anatomy</h3>
+                        <p class="text-text-secondary text-xs mt-1">Interactive Model</p>
+                    </div>
+                </a>
+                
+                <a href="health_analytics_dashboard.html" class="glass-card p-4 rounded-medical hover:shadow-medical-lg transition-medical hover-lift group">
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-gradient-to-br from-secondary to-secondary-700 rounded-lg mx-auto mb-3 flex items-center justify-center group-hover:scale-105 transition-medical">
+                            <i class="fas fa-chart-line text-white text-xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-text-primary text-sm">Analytics</h3>
+                        <p class="text-text-secondary text-xs mt-1">Health Insights</p>
+                    </div>
+                </a>
+                
+                <a href="patient_profile_management.html" class="glass-card p-4 rounded-medical hover:shadow-medical-lg transition-medical hover-lift group">
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-gradient-to-br from-accent to-accent-600 rounded-lg mx-auto mb-3 flex items-center justify-center group-hover:scale-105 transition-medical">
+                            <i class="fas fa-users text-white text-xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-text-primary text-sm">Profiles</h3>
+                        <p class="text-text-secondary text-xs mt-1">Patient Data</p>
+                    </div>
+                </a>
+                
+                <a href="emergency_response_center.html" class="glass-card p-4 rounded-medical hover:shadow-medical-lg transition-medical hover-lift group">
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-gradient-to-br from-error to-red-600 rounded-lg mx-auto mb-3 flex items-center justify-center group-hover:scale-105 transition-medical">
+                            <i class="fas fa-ambulance text-white text-xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-text-primary text-sm">Emergency</h3>
+                        <p class="text-text-secondary text-xs mt-1">Response Center</p>
+                    </div>
+                </a>
+                
+                <div class="glass-card p-4 rounded-medical hover:shadow-medical-lg transition-medical hover-lift group cursor-pointer">
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-gradient-to-br from-warning to-orange-600 rounded-lg mx-auto mb-3 flex items-center justify-center group-hover:scale-105 transition-medical">
+                            <i class="fas fa-utensils text-white text-xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-text-primary text-sm">Nutrition</h3>
+                        <p class="text-text-secondary text-xs mt-1">Food Tracking</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Real-time Vital Signs -->
+        <section class="mb-8">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-2xl font-heading font-bold text-text-primary">Vital Signs Monitor</h2>
+                <div class="flex items-center space-x-2 text-sm text-text-secondary">
+                    <div class="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
+                    <span>Live Updates</span>
+                    <span id="lastUpdate" class="font-data">--:--:--</span>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+                <!-- Heart Rate -->
+                <div id="heartRateCard" class="glass-card p-4 rounded-medical border-l-4 border-success">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-heartbeat text-success"></i>
+                            <span class="text-sm font-semibold text-text-primary">Heart Rate</span>
+                        </div>
+                        <div id="heartRateStatus" class="w-3 h-3 bg-success rounded-full"></div>
+                    </div>
+                    <div class="text-2xl font-data font-bold text-text-primary" id="heartRateValue">72</div>
+                    <div class="text-xs text-text-secondary">BPM</div>
+                    <div class="text-xs text-success mt-1">Normal Range</div>
+                </div>
+
+                <!-- Blood Pressure -->
+                <div id="bloodPressureCard" class="glass-card p-4 rounded-medical border-l-4 border-warning">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-tint text-warning"></i>
+                            <span class="text-sm font-semibold text-text-primary">Blood Pressure</span>
+                        </div>
+                        <div id="bpStatus" class="w-3 h-3 bg-warning rounded-full"></div>
+                    </div>
+                    <div class="text-2xl font-data font-bold text-text-primary" id="bpValue">128/82</div>
+                    <div class="text-xs text-text-secondary">mmHg</div>
+                    <div class="text-xs text-warning mt-1">Elevated</div>
+                </div>
+
+                <!-- Oxygen Saturation -->
+                <div id="oxygenCard" class="glass-card p-4 rounded-medical border-l-4 border-success">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-lungs text-success"></i>
+                            <span class="text-sm font-semibold text-text-primary">Oxygen Sat</span>
+                        </div>
+                        <div id="oxygenStatus" class="w-3 h-3 bg-success rounded-full"></div>
+                    </div>
+                    <div class="text-2xl font-data font-bold text-text-primary" id="oxygenValue">98</div>
+                    <div class="text-xs text-text-secondary">%</div>
+                    <div class="text-xs text-success mt-1">Normal</div>
+                </div>
+
+                <!-- Temperature -->
+                <div id="temperatureCard" class="glass-card p-4 rounded-medical border-l-4 border-success">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-thermometer-half text-success"></i>
+                            <span class="text-sm font-semibold text-text-primary">Temperature</span>
+                        </div>
+                        <div id="tempStatus" class="w-3 h-3 bg-success rounded-full"></div>
+                    </div>
+                    <div class="text-2xl font-data font-bold text-text-primary" id="tempValue">36.8</div>
+                    <div class="text-xs text-text-secondary">°C</div>
+                    <div class="text-xs text-success mt-1">Normal</div>
+                </div>
+
+                <!-- Blood Glucose -->
+                <div id="glucoseCard" class="glass-card p-4 rounded-medical border-l-4 border-error">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-vial text-error"></i>
+                            <span class="text-sm font-semibold text-text-primary">Glucose</span>
+                        </div>
+                        <div id="glucoseStatus" class="w-3 h-3 bg-error rounded-full pulse-critical"></div>
+                    </div>
+                    <div class="text-2xl font-data font-bold text-text-primary" id="glucoseValue">165</div>
+                    <div class="text-xs text-text-secondary">mg/dL</div>
+                    <div class="text-xs text-error mt-1">High</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="mb-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Heart Rate Variability Chart -->
+                <div class="glass-card p-6 rounded-medical">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-heading font-semibold text-text-primary">Heart Rate Variability</h3>
+                        <div class="flex items-center space-x-2 text-sm text-text-secondary">
+                            <div class="w-2 h-2 bg-primary rounded-full"></div>
+                            <span>Last 30 minutes</span>
+                        </div>
+                    </div>
+                    <div class="h-64">
+                        <canvas id="heartRateChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Blood Pressure Trends -->
+                <div class="glass-card p-6 rounded-medical">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-heading font-semibold text-text-primary">Blood Pressure Trends</h3>
+                        <div class="flex items-center space-x-2 text-sm text-text-secondary">
+                            <div class="w-2 h-2 bg-secondary rounded-full"></div>
+                            <span>Last 24 hours</span>
+                        </div>
+                    </div>
+                    <div class="h-64">
+                        <canvas id="bloodPressureChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- System Status Monitoring -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-heading font-bold text-text-primary mb-4">System Status</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Cardiovascular System -->
+                <div class="glass-card p-4 rounded-medical">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div class="w-10 h-10 bg-success-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-heart text-success"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-text-primary">Cardiovascular</h4>
+                            <p class="text-sm text-success">Stable</p>
+                        </div>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-success h-2 rounded-full" style="width: 85%"></div>
+                    </div>
+                    <p class="text-xs text-text-secondary mt-2">85% Optimal</p>
+                </div>
+
+                <!-- Respiratory System -->
+                <div class="glass-card p-4 rounded-medical">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div class="w-10 h-10 bg-success-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-lungs text-success"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-text-primary">Respiratory</h4>
+                            <p class="text-sm text-success">Normal</p>
+                        </div>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-success h-2 rounded-full" style="width: 92%"></div>
+                    </div>
+                    <p class="text-xs text-text-secondary mt-2">92% Optimal</p>
+                </div>
+
+                <!-- Metabolic System -->
+                <div class="glass-card p-4 rounded-medical">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div class="w-10 h-10 bg-error-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-dna text-error pulse-critical"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-text-primary">Metabolic</h4>
+                            <p class="text-sm text-error">Alert</p>
+                        </div>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-error h-2 rounded-full" style="width: 65%"></div>
+                    </div>
+                    <p class="text-xs text-text-secondary mt-2">65% - Glucose High</p>
+                </div>
+
+                <!-- Neurological System -->
+                <div class="glass-card p-4 rounded-medical">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div class="w-10 h-10 bg-success-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-brain text-success"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-text-primary">Neurological</h4>
+                            <p class="text-sm text-success">Normal</p>
+                        </div>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-success h-2 rounded-full" style="width: 88%"></div>
+                    </div>
+                    <p class="text-xs text-text-secondary mt-2">88% Optimal</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Activity -->
+        <section>
+            <h2 class="text-2xl font-heading font-bold text-text-primary mb-4">Recent Activity</h2>
+            <div class="glass-card rounded-medical">
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-4 p-3 bg-error-50 rounded-lg">
+                            <div class="w-8 h-8 bg-error rounded-full flex items-center justify-center">
+                                <i class="fas fa-exclamation text-white text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-semibold text-text-primary">High glucose level detected</p>
+                                <p class="text-xs text-text-secondary">2 minutes ago - 165 mg/dL</p>
+                            </div>
+                            <span class="text-xs text-error font-semibold">CRITICAL</span>
+                        </div>
+
+                        <div class="flex items-center space-x-4 p-3 bg-warning-50 rounded-lg">
+                            <div class="w-8 h-8 bg-warning rounded-full flex items-center justify-center">
+                                <i class="fas fa-info text-white text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-semibold text-text-primary">Blood pressure elevated</p>
+                                <p class="text-xs text-text-secondary">15 minutes ago - 128/82 mmHg</p>
+                            </div>
+                            <span class="text-xs text-warning font-semibold">WARNING</span>
+                        </div>
+
+                        <div class="flex items-center space-x-4 p-3 bg-success-50 rounded-lg">
+                            <div class="w-8 h-8 bg-success rounded-full flex items-center justify-center">
+                                <i class="fas fa-check text-white text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-semibold text-text-primary">Vital signs synchronized</p>
+                                <p class="text-xs text-text-secondary">1 hour ago - All systems connected</p>
+                            </div>
+                            <span class="text-xs text-success font-semibold">NORMAL</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Mobile Navigation -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-border-light">
+        <div class="grid grid-cols-5 py-2">
+            <a href="main_dashboard.html" class="flex flex-col items-center py-2 text-primary">
+                <i class="fas fa-tachometer-alt text-lg"></i>
+                <span class="text-xs mt-1">Dashboard</span>
+            </a>
+            <a href="3d_anatomy_viewer.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <i class="fas fa-user-md text-lg"></i>
+                <span class="text-xs mt-1">3D View</span>
+            </a>
+            <a href="health_analytics_dashboard.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <i class="fas fa-chart-line text-lg"></i>
+                <span class="text-xs mt-1">Analytics</span>
+            </a>
+            <a href="patient_profile_management.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <i class="fas fa-users text-lg"></i>
+                <span class="text-xs mt-1">Profiles</span>
+            </a>
+            <a href="emergency_response_center.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <i class="fas fa-ambulance text-lg"></i>
+                <span class="text-xs mt-1">Emergency</span>
+            </a>
+        </div>
+    </nav>
+
+    <script>
+        // Real-time data simulation
+        let autoRefresh = true;
+        let soundEnabled = true;
+        let heartRateChart, bloodPressureChart;
+
+        // Initialize charts
+        function initializeCharts() {
+            // Heart Rate Chart
+            const hrCtx = document.getElementById('heartRateChart').getContext('2d');
+            heartRateChart = new Chart(hrCtx, {
+                type: 'line',
+                data: {
+                    labels: generateTimeLabels(30),
+                    datasets: [{
+                        label: 'Heart Rate (BPM)',
+                        data: generateHeartRateData(30),
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 60,
+                            max: 100
+                        }
+                    }
+                }
+            });
+
+            // Blood Pressure Chart
+            const bpCtx = document.getElementById('bloodPressureChart').getContext('2d');
+            bloodPressureChart = new Chart(bpCtx, {
+                type: 'line',
+                data: {
+                    labels: generateTimeLabels(24),
+                    datasets: [{
+                        label: 'Systolic',
+                        data: generateBPData(24, 'systolic'),
+                        borderColor: '#8e44ad',
+                        backgroundColor: 'rgba(142, 68, 173, 0.1)',
+                        borderWidth: 2,
+                        fill: false
+                    }, {
+                        label: 'Diastolic',
+                        data: generateBPData(24, 'diastolic'),
+                        borderColor: '#2ecc71',
+                        backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                        borderWidth: 2,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 60,
+                            max: 160
+                        }
+                    }
+                }
+            });
+        }
+
+        // Generate mock data
+        function generateTimeLabels(count) {
+            const labels = [];
+            const now = new Date();
+            for (let i = count - 1; i >= 0; i--) {
+                const time = new Date(now.getTime() - i * 60000);
+                labels.push(time.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }));
+            }
+            return labels;
+        }
+
+        function generateHeartRateData(count) {
+            const data = [];
+            let baseRate = 72;
+            for (let i = 0; i < count; i++) {
+                baseRate += (Math.random() - 0.5) * 8;
+                baseRate = Math.max(60, Math.min(95, baseRate));
+                data.push(Math.round(baseRate));
+            }
+            return data;
+        }
+
+        function generateBPData(count, type) {
+            const data = [];
+            let baseValue = type === 'systolic' ? 128 : 82;
+            for (let i = 0; i < count; i++) {
+                baseValue += (Math.random() - 0.5) * 10;
+                if (type === 'systolic') {
+                    baseValue = Math.max(110, Math.min(150, baseValue));
+                } else {
+                    baseValue = Math.max(70, Math.min(95, baseValue));
+                }
+                data.push(Math.round(baseValue));
+            }
+            return data;
+        }
+
+        // Update vital signs
+        function updateVitalSigns() {
+            if (!autoRefresh) return;
+
+            // Simulate real-time data
+            const heartRate = Math.floor(Math.random() * 20) + 65;
+            const systolic = Math.floor(Math.random() * 30) + 115;
+            const diastolic = Math.floor(Math.random() * 15) + 75;
+            const oxygen = Math.floor(Math.random() * 5) + 95;
+            const temperature = (Math.random() * 2 + 36).toFixed(1);
+            const glucose = Math.floor(Math.random() * 50) + 140;
+
+            // Update values
+            document.getElementById('heartRateValue').textContent = heartRate;
+            document.getElementById('bpValue').textContent = `${systolic}/${diastolic}`;
+            document.getElementById('oxygenValue').textContent = oxygen;
+            document.getElementById('tempValue').textContent = temperature;
+            document.getElementById('glucoseValue').textContent = glucose;
+
+            // Update status indicators and colors
+            updateStatusIndicator('heartRate', heartRate, 60, 100);
+            updateStatusIndicator('bp', systolic, 120, 140);
+            updateStatusIndicator('oxygen', oxygen, 95, 100);
+            updateStatusIndicator('temp', parseFloat(temperature), 36.1, 37.2);
+            updateStatusIndicator('glucose', glucose, 70, 140);
+
+            // Update timestamp
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString();
+
+            // Check for critical values
+            if (glucose > 160 || systolic > 140) {
+                showEmergencyAlert();
+            }
+        }
+
+        function updateStatusIndicator(type, value, normalMin, normalMax) {
+            const statusElement = document.getElementById(type + 'Status');
+            const cardElement = document.getElementById(type + 'Card');
+            
+            if (value >= normalMin && value <= normalMax) {
+                statusElement.className = 'w-3 h-3 bg-success rounded-full';
+                cardElement.className = cardElement.className.replace(/border-\w+-\d+/, 'border-success');
+            } else if (value < normalMin * 0.9 || value > normalMax * 1.1) {
+                statusElement.className = 'w-3 h-3 bg-error rounded-full pulse-critical';
+                cardElement.className = cardElement.className.replace(/border-\w+-\d+/, 'border-error');
+            } else {
+                statusElement.className = 'w-3 h-3 bg-warning rounded-full';
+                cardElement.className = cardElement.className.replace(/border-\w+-\d+/, 'border-warning');
+            }
+        }
+
+        function showEmergencyAlert() {
+            const alertElement = document.getElementById('emergencyAlert');
+            alertElement.classList.remove('hidden');
+            
+            if (soundEnabled) {
+                // Simulate alert sound (in real app, would play actual sound)
+                console.log('🚨 Emergency Alert Sound');
+            }
+        }
+
+        // Event listeners
+        document.getElementById('autoRefreshToggle').addEventListener('click', function() {
+            autoRefresh = !autoRefresh;
+            this.classList.toggle('bg-accent');
+            this.classList.toggle('bg-gray-400');
+            this.querySelector('i').classList.toggle('fa-spin', autoRefresh);
+        });
+
+        document.getElementById('soundToggle').addEventListener('click', function() {
+            soundEnabled = !soundEnabled;
+            const icon = this.querySelector('i');
+            icon.className = soundEnabled ? 'fas fa-volume-up text-text-secondary' : 'fas fa-volume-mute text-text-secondary';
+        });
+
+        document.getElementById('clearAlert').addEventListener('click', function() {
+            document.getElementById('emergencyAlert').classList.add('hidden');
+        });
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCharts();
+            updateVitalSigns();
+            
+            // Update every 5 seconds
+            setInterval(updateVitalSigns, 5000);
+        });
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>

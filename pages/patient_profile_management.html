@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Profile Management - Body Sandbox</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fmedinsight1355back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+<body class="bg-gradient-to-br from-primary-50 to-secondary-50 min-h-screen font-body">
+    <!-- Header Section -->
+    <header class="glass-card border-b border-border-light sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+                        <i class="fas fa-heartbeat text-white text-lg"></i>
+                    </div>
+                    <h1 class="text-xl font-heading font-bold text-text-primary">MedInsight AI</h1>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="main_dashboard.html" class="text-text-secondary hover:text-primary transition-medical">Dashboard</a>
+                    <a href="3d_anatomy_viewer.html" class="text-text-secondary hover:text-primary transition-medical">3D Anatomy</a>
+                    <a href="health_analytics_dashboard.html" class="text-text-secondary hover:text-primary transition-medical">Analytics</a>
+                    <a href="patient_profile_management.html" class="text-primary font-semibold border-b-2 border-primary pb-1">Profiles</a>
+                    <a href="emergency_response_center.html" class="text-text-secondary hover:text-primary transition-medical">Emergency</a>
+                </nav>
+
+                <!-- Controls -->
+                <div class="flex items-center space-x-4">
+                    <button class="flex items-center space-x-2 px-3 py-2 bg-accent text-white rounded-lg hover:bg-accent-600 transition-medical">
+                        <i class="fas fa-plus text-sm"></i>
+                        <span class="hidden sm:inline text-sm">New Patient</span>
+                    </button>
+                    <button class="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-medical">
+                        <i class="fas fa-search text-text-secondary"></i>
+                    </button>
+                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-white text-sm"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Patient Search & Selection -->
+        <section class="mb-6">
+            <div class="glass-card p-6 rounded-medical">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-heading font-bold text-text-primary">Patient Profile Management</h2>
+                        <p class="text-text-secondary mt-1">Manage comprehensive patient information and medical history</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <input type="text" placeholder="Search patients..." class="pl-10 pr-4 py-2 border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
+                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-text-secondary"></i>
+                        </div>
+                        <select class="px-4 py-2 border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <option>All Patients</option>
+                            <option>Active</option>
+                            <option>Inactive</option>
+                            <option>Critical</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Patient Profile Header -->
+        <section class="mb-6">
+            <div class="glass-card p-6 rounded-medical">
+                <div class="flex flex-col lg:flex-row lg:items-center gap-6">
+                    <!-- Patient Photo & Basic Info -->
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <img src="https://m.media-amazon.com/images/M/MV5BMzRiNDhiMDQtYWZkMS00ZjU5LTg5NzUtOTc4NzE2Yzc0ZWUwXkEyXkFqcGc@._V1_.jpg" alt="Patient Photo" class="w-20 h-20 rounded-full object-cover border-4 border-white shadow-medical" onerror="this.src='https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'; this.onerror=null;" />
+                            <button class="absolute -bottom-1 -right-1 w-6 h-6 bg-primary rounded-full flex items-center justify-center text-white text-xs hover:bg-primary-600 transition-medical">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-heading font-bold text-text-primary">Anirudh Sandeep</h3>
+                            <p class="text-text-secondary">Patient ID: #MED-2024-0847</p>
+                            <div class="flex items-center space-x-4 mt-2">
+                                <span class="text-sm text-text-secondary">Age: 20</span>
+                                <span class="text-sm text-text-secondary">Male</span>
+                                <span class="px-2 py-1 bg-success-100 text-success text-xs rounded-full">Active</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Vitals Summary -->
+                    <div class="flex-1 grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="text-center">
+                            <div class="text-lg font-data font-bold text-text-primary">72</div>
+                            <div class="text-xs text-text-secondary">Heart Rate</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-lg font-data font-bold text-text-primary">120/80</div>
+                            <div class="text-xs text-text-secondary">Blood Pressure</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-lg font-data font-bold text-text-primary">98%</div>
+                            <div class="text-xs text-text-secondary">Oxygen Sat</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-lg font-data font-bold text-text-primary">36.8°C</div>
+                            <div class="text-xs text-text-secondary">Temperature</div>
+                        </div>
+                    </div>
+
+                    <!-- Emergency Contact -->
+                    <div class="lg:text-right">
+                        <div class="text-sm text-text-secondary mb-1">Emergency Contact</div>
+                        <div class="font-semibold text-text-primary">Michael Johnson</div>
+                        <div class="text-sm text-text-secondary">+1 (555) 123-4567</div>
+                        <button class="mt-2 text-primary hover:text-primary-600 text-sm transition-medical">
+                            <i class="fas fa-edit mr-1"></i>Edit
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tabbed Interface -->
+        <section>
+            <div class="glass-card rounded-medical overflow-hidden">
+                <!-- Tab Navigation -->
+                <div class="border-b border-border-light">
+                    <nav class="flex overflow-x-auto">
+                        <button class="tab-button active px-6 py-4 text-sm font-semibold border-b-2 border-primary text-primary whitespace-nowrap" data-tab="demographics">
+                            <i class="fas fa-user mr-2"></i>Demographics
+                        </button>
+                        <button class="tab-button px-6 py-4 text-sm font-semibold border-b-2 border-transparent text-text-secondary hover:text-primary transition-medical whitespace-nowrap" data-tab="conditions">
+                            <i class="fas fa-stethoscope mr-2"></i>Medical Conditions
+                        </button>
+                        <button class="tab-button px-6 py-4 text-sm font-semibold border-b-2 border-transparent text-text-secondary hover:text-primary transition-medical whitespace-nowrap" data-tab="medications">
+                            <i class="fas fa-pills mr-2"></i>Medications
+                        </button>
+                        <button class="tab-button px-6 py-4 text-sm font-semibold border-b-2 border-transparent text-text-secondary hover:text-primary transition-medical whitespace-nowrap" data-tab="history">
+                            <i class="fas fa-history mr-2"></i>Medical History
+                        </button>
+                    </nav>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="p-6">
+                    <!-- Demographics Tab -->
+                    <div id="demographics" class="tab-content">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <!-- Personal Information -->
+                            <div>
+                                <h4 class="text-lg font-heading font-semibold text-text-primary mb-4">Personal Information</h4>
+                                <div class="space-y-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-semibold text-text-primary mb-2">First Name *</label>
+                                            <input type="text" value="Anirudh" class="w-full px-3 py-2 border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-semibold text-text-primary mb-2">Last Name *</label>
+                                            <input type="text" value="Sandeep" class="w-full px-3 py-2 border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-semibold text-text-primary mb-2">Age *</label>
+                                            <input type="number" value="34" class="w-full px-3 py-2 border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-semibold text-text-primary mb-2">Gender *</label>
+                                            <select class="w-full px-3 py-2 border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                                <option>Female</option>
+                                                <option>Male</option>
+                                                <option>Other</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-semibold text-text-primary mb-2">Blood Type</label>
+                                            <select class="w-full px-3 py-2 border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                                <option>O+</option>
+                                                <option>O-</option>
+                                                <option>A+</option>
+                                                <option>A-</option>
+                                                <option>B+</option>
+                                                <option>B-</option>
+                                                <option>AB+</option>
+                                                <option>AB-</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold text-text-primary mb-2">Date of Birth *</label>
+                                        <input type="date" value="1989-03-15" class="w-full px-3 py-2 border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold text-text-primary mb-2">Phone Number</label>
+                                        <input type="tel" value="+1 (555) 987-6543" class="w-full px-3 py-2 border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold text-text-primary mb-2">Email Address</label>
+                                        <input type="email" value="anirudh.sandeep@email.com" class="w-full px-3 py-2 border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold text-text-primary mb-2">Address</label>
+                                        <textarea rows="3" class="w-full px-3 py-2 border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">123 Medical Center Drive
+Suite 456
+New York, NY 10001</textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Physical Measurements -->
+                            <div>
+                                <h4 class="text-lg font-heading font-semibold text-text-primary mb-4">Physical Measurements</h4>
+                                <div class="space-y-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-semibold text-text-primary mb-2">Height (cm) *</label>
+                                            <input type="number" value="165" id="height" class="w-full px-3 py-2 border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-semibold text-text-primary mb-2">Weight (kg) *</label>
+                                            <input type="number" value="62" id="weight" class="w-full px-3 py-2 border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
+                                        </div>
+                                    </div>
+
+                                    <!-- BMI Calculator -->
+                                    <div class="bg-primary-50 p-4 rounded-lg">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-sm font-semibold text-text-primary">Body Mass Index (BMI)</span>
+                                            <button id="calculateBMI" class="text-primary hover:text-primary-600 text-sm transition-medical">
+                                                <i class="fas fa-calculator mr-1"></i>Calculate
+                                            </button>
+                                        </div>
+                                        <div class="text-2xl font-data font-bold text-primary" id="bmiValue">22.8</div>
+                                        <div class="text-sm text-success" id="bmiCategory">Normal Weight</div>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold text-text-primary mb-2">Allergies</label>
+                                        <textarea rows="3" placeholder="List any known allergies..." class="w-full px-3 py-2 border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">Penicillin, Shellfish</textarea>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold text-text-primary mb-2">Insurance Information</label>
+                                        <div class="space-y-2">
+                                            <input type="text" placeholder="Insurance Provider" value="HealthCare Plus" class="w-full px-3 py-2 border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
+                                            <input type="text" placeholder="Policy Number" value="HC-789456123" class="w-full px-3 py-2 border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Medical Conditions Tab -->
+                    <div id="conditions" class="tab-content hidden">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <!-- Current Conditions -->
+                            <div>
+                                <h4 class="text-lg font-heading font-semibold text-text-primary mb-4">Current Medical Conditions</h4>
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between p-3 bg-error-50 rounded-lg">
+                                        <div class="flex items-center space-x-3">
+                                            <input type="checkbox" checked class="w-4 h-4 text-primary border-border-light rounded focus:ring-primary" />
+                                            <div>
+                                                <div class="font-semibold text-text-primary">Hypertension</div>
+                                                <div class="text-sm text-text-secondary">Onset: Jan 2020</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="px-2 py-1 bg-error text-white text-xs rounded-full">High</span>
+                                            <button class="text-text-secondary hover:text-primary transition-medical">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center justify-between p-3 bg-warning-50 rounded-lg">
+                                        <div class="flex items-center space-x-3">
+                                            <input type="checkbox" checked class="w-4 h-4 text-primary border-border-light rounded focus:ring-primary" />
+                                            <div>
+                                                <div class="font-semibold text-text-primary">Type 2 Diabetes</div>
+                                                <div class="text-sm text-text-secondary">Onset: Mar 2021</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="px-2 py-1 bg-warning text-white text-xs rounded-full">Moderate</span>
+                                            <button class="text-text-secondary hover:text-primary transition-medical">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                        <div class="flex items-center space-x-3">
+                                            <input type="checkbox" class="w-4 h-4 text-primary border-border-light rounded focus:ring-primary" />
+                                            <div>
+                                                <div class="font-semibold text-text-primary">Asthma</div>
+                                                <div class="text-sm text-text-secondary">Not diagnosed</div>
+                                            </div>
+                                        </div>
+                                        <button class="text-text-secondary hover:text-primary transition-medical">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                        <div class="flex items-center space-x-3">
+                                            <input type="checkbox" class="w-4 h-4 text-primary border-border-light rounded focus:ring-primary" />
+                                            <div>
+                                                <div class="font-semibold text-text-primary">Heart Disease</div>
+                                                <div class="text-sm text-text-secondary">Not diagnosed</div>
+                                            </div>
+                                        </div>
+                                        <button class="text-text-secondary hover:text-primary transition-medical">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                        <div class="flex items-center space-x-3">
+                                            <input type="checkbox" class="w-4 h-4 text-primary border-border-light rounded focus:ring-primary" />
+                                            <div>
+                                                <div class="font-semibold text-text-primary">Obesity</div>
+                                                <div class="text-sm text-text-secondary">Not diagnosed</div>
+                                            </div>
+                                        </div>
+                                        <button class="text-text-secondary hover:text-primary transition-medical">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="flex items-center justify-between p-3 bg-success-50 rounded-lg">
+                                        <div class="flex items-center space-x-3">
+                                            <input type="checkbox" checked class="w-4 h-4 text-primary border-border-light rounded focus:ring-primary" />
+                                            <div>
+                                                <div class="font-semibold text-text-primary">Anxiety</div>
+                                                <div class="text-sm text-text-secondary">Onset: Sep 2022</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="px-2 py-1 bg-success text-white text-xs rounded-full">Mild</span>
+                                            <button class="text-text-secondary hover:text-primary transition-medical">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Risk Assessment -->
+                            <div>
+                                <h4 class="text-lg font-heading font-semibold text-text-primary mb-4">Risk Assessment</h4>
+                                <div class="space-y-4">
+                                    <!-- Cardiovascular Risk -->
+                                    <div class="p-4 bg-warning-50 rounded-lg border-l-4 border-warning">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <h5 class="font-semibold text-text-primary">Cardiovascular Risk</h5>
+                                            <span class="px-2 py-1 bg-warning text-white text-xs rounded-full">Moderate</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                                            <div class="bg-warning h-2 rounded-full" style="width: 65%"></div>
+                                        </div>
+                                        <p class="text-sm text-text-secondary">Based on hypertension and family history</p>
+                                    </div>
+
+                                    <!-- Diabetes Risk -->
+                                    <div class="p-4 bg-error-50 rounded-lg border-l-4 border-error">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <h5 class="font-semibold text-text-primary">Diabetes Complications</h5>
+                                            <span class="px-2 py-1 bg-error text-white text-xs rounded-full">High</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                                            <div class="bg-error h-2 rounded-full" style="width: 80%"></div>
+                                        </div>
+                                        <p class="text-sm text-text-secondary">Current diabetes with elevated glucose levels</p>
+                                    </div>
+
+                                    <!-- Overall Health Score -->
+                                    <div class="p-4 bg-primary-50 rounded-lg border-l-4 border-primary">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <h5 class="font-semibold text-text-primary">Overall Health Score</h5>
+                                            <span class="text-2xl font-data font-bold text-primary">72/100</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                                            <div class="bg-primary h-2 rounded-full" style="width: 72%"></div>
+                                        </div>
+                                        <p class="text-sm text-text-secondary">Good overall health with manageable conditions</p>
+                                    </div>
+
+                                    <!-- Recommendations -->
+                                    <div class="p-4 bg-accent-50 rounded-lg">
+                                        <h5 class="font-semibold text-text-primary mb-3">Health Recommendations</h5>
+                                        <ul class="space-y-2 text-sm text-text-secondary">
+                                            <li class="flex items-start space-x-2">
+                                                <i class="fas fa-check-circle text-accent mt-0.5"></i>
+                                                <span>Monitor blood glucose levels daily</span>
+                                            </li>
+                                            <li class="flex items-start space-x-2">
+                                                <i class="fas fa-check-circle text-accent mt-0.5"></i>
+                                                <span>Regular cardiovascular exercise 3x per week</span>
+                                            </li>
+                                            <li class="flex items-start space-x-2">
+                                                <i class="fas fa-check-circle text-accent mt-0.5"></i>
+                                                <span>Follow low-sodium diet plan</span>
+                                            </li>
+                                            <li class="flex items-start space-x-2">
+                                                <i class="fas fa-check-circle text-accent mt-0.5"></i>
+                                                <span>Stress management techniques</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Medications Tab -->
+                    <div id="medications" class="tab-content hidden">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <!-- Current Medications -->
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <h4 class="text-lg font-heading font-semibold text-text-primary">Current Medications</h4>
+                                    <button class="flex items-center space-x-2 px-3 py-2 bg-primary text-white rounded-lg hover:bg-primary-600 transition-medical">
+                                        <i class="fas fa-plus text-sm"></i>
+                                        <span class="text-sm">Add Medication</span>
+                                    </button>
+                                </div>
+
+                                <div class="space-y-4">
+                                    <div class="p-4 bg-white border border-border-light rounded-lg">
+                                        <div class="flex items-start justify-between">
+                                            <div class="flex-1">
+                                                <h5 class="font-semibold text-text-primary">Lisinopril</h5>
+                                                <p class="text-sm text-text-secondary">ACE Inhibitor for Hypertension</p>
+                                                <div class="mt-2 space-y-1">
+                                                    <div class="flex items-center space-x-4 text-sm">
+                                                        <span class="text-text-secondary">Dosage:</span>
+                                                        <span class="font-data">10mg</span>
+                                                    </div>
+                                                    <div class="flex items-center space-x-4 text-sm">
+                                                        <span class="text-text-secondary">Frequency:</span>
+                                                        <span class="font-data">Once daily</span>
+                                                    </div>
+                                                    <div class="flex items-center space-x-4 text-sm">
+                                                        <span class="text-text-secondary">Started:</span>
+                                                        <span class="font-data">Jan 15, 2020</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center space-x-2">
+                                                <button class="p-2 text-text-secondary hover:text-primary transition-medical">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="p-2 text-text-secondary hover:text-error transition-medical">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="p-4 bg-white border border-border-light rounded-lg">
+                                        <div class="flex items-start justify-between">
+                                            <div class="flex-1">
+                                                <h5 class="font-semibold text-text-primary">Metformin</h5>
+                                                <p class="text-sm text-text-secondary">Antidiabetic for Type 2 Diabetes</p>
+                                                <div class="mt-2 space-y-1">
+                                                    <div class="flex items-center space-x-4 text-sm">
+                                                        <span class="text-text-secondary">Dosage:</span>
+                                                        <span class="font-data">500mg</span>
+                                                    </div>
+                                                    <div class="flex items-center space-x-4 text-sm">
+                                                        <span class="text-text-secondary">Frequency:</span>
+                                                        <span class="font-data">Twice daily</span>
+                                                    </div>
+                                                    <div class="flex items-center space-x-4 text-sm">
+                                                        <span class="text-text-secondary">Started:</span>
+                                                        <span class="font-data">Mar 22, 2021</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center space-x-2">
+                                                <button class="p-2 text-text-secondary hover:text-primary transition-medical">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="p-2 text-text-secondary hover:text-error transition-medical">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="p-4 bg-white border border-border-light rounded-lg">
+                                        <div class="flex items-start justify-between">
+                                            <div class="flex-1">
+                                                <h5 class="font-semibold text-text-primary">Sertraline</h5>
+                                                <p class="text-sm text-text-secondary">SSRI for Anxiety</p>
+                                                <div class="mt-2 space-y-1">
+                                                    <div class="flex items-center space-x-4 text-sm">
+                                                        <span class="text-text-secondary">Dosage:</span>
+                                                        <span class="font-data">50mg</span>
+                                                    </div>
+                                                    <div class="flex items-center space-x-4 text-sm">
+                                                        <span class="text-text-secondary">Frequency:</span>
+                                                        <span class="font-data">Once daily</span>
+                                                    </div>
+                                                    <div class="flex items-center space-x-4 text-sm">
+                                                        <span class="text-text-secondary">Started:</span>
+                                                        <span class="font-data">Sep 10, 2022</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center space-x-2">
+                                                <button class="p-2 text-text-secondary hover:text-primary transition-medical">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="p-2 text-text-secondary hover:text-error transition-medical">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Add New Medication -->
+                            <div>
+                                <h4 class="text-lg font-heading font-semibold text-text-primary mb-4">Add New Medication</h4>
+                                <div class="p-4 bg-gray-50 rounded-lg">
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label class="block text-sm font-semibold text-text-primary mb-2">Medication Name *</label>
+                                            <div class="relative">
+                                                <input type="text" placeholder="Search medications..." class="w-full px-3 py-2 border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
+                                                <i class="fas fa-search absolute right-3 top-1/2 transform -translate-y-1/2 text-text-secondary"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="block text-sm font-semibold text-text-primary mb-2">Dosage *</label>
+                                                <input type="text" placeholder="e.g., 10mg" class="w-full px-3 py-2 border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-semibold text-text-primary mb-2">Frequency *</label>
+                                                <select class="w-full px-3 py-2 border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                                    <option>Once daily</option>
+                                                    <option>Twice daily</option>
+                                                    <option>Three times daily</option>
+                                                    <option>Four times daily</option>
+                                                    <option>As needed</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm font-semibold text-text-primary mb-2">Start Date</label>
+                                            <input type="date" value="2025-01-10" class="w-full px-3 py-2 border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm font-semibold text-text-primary mb-2">Notes</label>
+                                            <textarea rows="3" placeholder="Additional instructions or notes..." class="w-full px-3 py-2 border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                                        </div>
+
+                                        <button class="w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-600 transition-medical">
+                                            <i class="fas fa-plus mr-2"></i>Add Medication
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Medication Interactions -->
+                                <div class="mt-6">
+                                    <h5 class="text-md font-heading font-semibold text-text-primary mb-3">Drug Interactions Check</h5>
+                                    <div class="p-3 bg-success-50 rounded-lg border-l-4 border-success">
+                                        <div class="flex items-center space-x-2">
+                                            <i class="fas fa-check-circle text-success"></i>
+                                            <span class="text-sm text-success font-semibold">No major interactions detected</span>
+                                        </div>
+                                        <p class="text-xs text-text-secondary mt-1">Current medications are compatible</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Medical History Tab -->
+                    <div id="history" class="tab-content hidden">
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            <!-- Timeline -->
+                            <div class="lg:col-span-2">
+                                <h4 class="text-lg font-heading font-semibold text-text-primary mb-4">Medical History Timeline</h4>
+                                <div class="space-y-4">
+                                    <!-- Recent Visit -->
+                                    <div class="flex space-x-4">
+                                        <div class="flex flex-col items-center">
+                                            <div class="w-3 h-3 bg-primary rounded-full"></div>
+                                            <div class="w-0.5 h-16 bg-border-light"></div>
+                                        </div>
+                                        <div class="flex-1 pb-4">
+                                            <div class="flex items-center justify-between mb-2">
+                                                <h5 class="font-semibold text-text-primary">Routine Checkup</h5>
+                                                <span class="text-sm text-text-secondary">Jan 8, 2025</span>
+                                            </div>
+                                            <p class="text-sm text-text-secondary mb-2">Dr. Michael Chen - Internal Medicine</p>
+                                            <div class="bg-white p-3 rounded-lg border border-border-light">
+                                                <p class="text-sm text-text-primary">Blood pressure elevated (135/88). Adjusted Lisinopril dosage. Patient reports good glucose control. Continue current diabetes management.</p>
+                                                <div class="mt-2 flex items-center space-x-4 text-xs text-text-secondary">
+                                                    <span>BP: 135/88</span>
+                                                    <span>Weight: 62kg</span>
+                                                    <span>Glucose: 142 mg/dL</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Lab Results -->
+                                    <div class="flex space-x-4">
+                                        <div class="flex flex-col items-center">
+                                            <div class="w-3 h-3 bg-secondary rounded-full"></div>
+                                            <div class="w-0.5 h-16 bg-border-light"></div>
+                                        </div>
+                                        <div class="flex-1 pb-4">
+                                            <div class="flex items-center justify-between mb-2">
+                                                <h5 class="font-semibold text-text-primary">Lab Results</h5>
+                                                <span class="text-sm text-text-secondary">Dec 15, 2024</span>
+                                            </div>
+                                            <p class="text-sm text-text-secondary mb-2">Comprehensive Metabolic Panel</p>
+                                            <div class="bg-white p-3 rounded-lg border border-border-light">
+                                                <div class="grid grid-cols-2 gap-2 text-sm">
+                                                    <div class="flex justify-between">
+                                                        <span class="text-text-secondary">HbA1c:</span>
+                                                        <span class="font-data text-warning">7.2%</span>
+                                                    </div>
+                                                    <div class="flex justify-between">
+                                                        <span class="text-text-secondary">Cholesterol:</span>
+                                                        <span class="font-data text-success">185 mg/dL</span>
+                                                    </div>
+                                                    <div class="flex justify-between">
+                                                        <span class="text-text-secondary">HDL:</span>
+                                                        <span class="font-data text-success">52 mg/dL</span>
+                                                    </div>
+                                                    <div class="flex justify-between">
+                                                        <span class="text-text-secondary">LDL:</span>
+                                                        <span class="font-data text-warning">118 mg/dL</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Diagnosis -->
+                                    <div class="flex space-x-4">
+                                        <div class="flex flex-col items-center">
+                                            <div class="w-3 h-3 bg-accent rounded-full"></div>
+                                            <div class="w-0.5 h-16 bg-border-light"></div>
+                                        </div>
+                                        <div class="flex-1 pb-4">
+                                            <div class="flex items-center justify-between mb-2">
+                                                <h5 class="font-semibold text-text-primary">Anxiety Diagnosis</h5>
+                                                <span class="text-sm text-text-secondary">Sep 10, 2022</span>
+                                            </div>
+                                            <p class="text-sm text-text-secondary mb-2">Dr. Sarah Williams - Psychiatry</p>
+                                            <div class="bg-white p-3 rounded-lg border border-border-light">
+                                                <p class="text-sm text-text-primary">Diagnosed with Generalized Anxiety Disorder. Started on Sertraline 50mg daily. Patient education provided on stress management techniques.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Initial Diabetes Diagnosis -->
+                                    <div class="flex space-x-4">
+                                        <div class="flex flex-col items-center">
+                                            <div class="w-3 h-3 bg-error rounded-full"></div>
+                                            <div class="w-0.5 h-8 bg-border-light"></div>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="flex items-center justify-between mb-2">
+                                                <h5 class="font-semibold text-text-primary">Type 2 Diabetes Diagnosis</h5>
+                                                <span class="text-sm text-text-secondary">Mar 22, 2021</span>
+                                            </div>
+                                            <p class="text-sm text-text-secondary mb-2">Dr. Michael Chen - Internal Medicine</p>
+                                            <div class="bg-white p-3 rounded-lg border border-border-light">
+                                                <p class="text-sm text-text-primary">Initial diagnosis following elevated fasting glucose (168 mg/dL) and HbA1c (8.1%). Started on Metformin 500mg twice daily. Dietary counseling scheduled.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Summary & Actions -->
+                            <div>
+                                <h4 class="text-lg font-heading font-semibold text-text-primary mb-4">Quick Summary</h4>
+                                <div class="space-y-4">
+                                    <!-- Visit Statistics -->
+                                    <div class="p-4 bg-primary-50 rounded-lg">
+                                        <h5 class="font-semibold text-text-primary mb-3">Visit Statistics</h5>
+                                        <div class="space-y-2 text-sm">
+                                            <div class="flex justify-between">
+                                                <span class="text-text-secondary">Total Visits:</span>
+                                                <span class="font-data">24</span>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <span class="text-text-secondary">Last Visit:</span>
+                                                <span class="font-data">Jan 8, 2025</span>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <span class="text-text-secondary">Next Scheduled:</span>
+                                                <span class="font-data">Apr 8, 2025</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Key Milestones -->
+                                    <div class="p-4 bg-accent-50 rounded-lg">
+                                        <h5 class="font-semibold text-text-primary mb-3">Key Milestones</h5>
+                                        <div class="space-y-2 text-sm">
+                                            <div class="flex items-center space-x-2">
+                                                <i class="fas fa-calendar text-accent"></i>
+                                                <span class="text-text-secondary">Patient since 2020</span>
+                                            </div>
+                                            <div class="flex items-center space-x-2">
+                                                <i class="fas fa-stethoscope text-accent"></i>
+                                                <span class="text-text-secondary">3 Active conditions</span>
+                                            </div>
+                                            <div class="flex items-center space-x-2">
+                                                <i class="fas fa-pills text-accent"></i>
+                                                <span class="text-text-secondary">3 Current medications</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Actions -->
+                                    <div class="space-y-2">
+                                        <button class="w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-600 transition-medical text-sm">
+                                            <i class="fas fa-calendar-plus mr-2"></i>Schedule Appointment
+                                        </button>
+                                        <button class="w-full px-4 py-2 bg-secondary text-white rounded-lg hover:bg-secondary-700 transition-medical text-sm">
+                                            <i class="fas fa-file-medical mr-2"></i>Generate Report
+                                        </button>
+                                        <button class="w-full px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent-600 transition-medical text-sm">
+                                            <i class="fas fa-share mr-2"></i>Share Profile
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Action Buttons -->
+        <section class="mt-6">
+            <div class="flex flex-col sm:flex-row gap-4 justify-end">
+                <button class="px-6 py-3 bg-gray-100 text-text-secondary rounded-lg hover:bg-gray-200 transition-medical">
+                    <i class="fas fa-times mr-2"></i>Cancel Changes
+                </button>
+                <button class="px-6 py-3 bg-warning text-white rounded-lg hover:bg-orange-600 transition-medical">
+                    <i class="fas fa-print mr-2"></i>Print Profile
+                </button>
+                <button class="px-6 py-3 bg-error text-white rounded-lg hover:bg-red-600 transition-medical">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>Emergency Alert
+                </button>
+                <button class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-600 transition-medical">
+                    <i class="fas fa-save mr-2"></i>Save Changes
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Mobile Navigation -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-border-light">
+        <div class="grid grid-cols-5 py-2">
+            <a href="main_dashboard.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <i class="fas fa-tachometer-alt text-lg"></i>
+                <span class="text-xs mt-1">Dashboard</span>
+            </a>
+            <a href="3d_anatomy_viewer.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <i class="fas fa-user-md text-lg"></i>
+                <span class="text-xs mt-1">3D View</span>
+            </a>
+            <a href="health_analytics_dashboard.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <i class="fas fa-chart-line text-lg"></i>
+                <span class="text-xs mt-1">Analytics</span>
+            </a>
+            <a href="patient_profile_management.html" class="flex flex-col items-center py-2 text-primary">
+                <i class="fas fa-users text-lg"></i>
+                <span class="text-xs mt-1">Profiles</span>
+            </a>
+            <a href="emergency_response_center.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <i class="fas fa-ambulance text-lg"></i>
+                <span class="text-xs mt-1">Emergency</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Confirmation Dialog (Hidden by default) -->
+    <div id="confirmDialog" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="glass-card p-6 rounded-medical max-w-md mx-4">
+            <div class="text-center">
+                <i class="fas fa-question-circle text-4xl text-warning mb-4"></i>
+                <h3 class="text-lg font-heading font-semibold text-text-primary mb-2">Confirm Changes</h3>
+                <p class="text-text-secondary mb-6">Are you sure you want to save these changes to the patient profile?</p>
+                <div class="flex space-x-3">
+                    <button id="cancelConfirm" class="flex-1 px-4 py-2 bg-gray-100 text-text-secondary rounded-lg hover:bg-gray-200 transition-medical">
+                        Cancel
+                    </button>
+                    <button id="confirmSave" class="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-600 transition-medical">
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active', 'border-primary', 'text-primary');
+                        btn.classList.add('border-transparent', 'text-text-secondary');
+                    });
+                    tabContents.forEach(content => {
+                        content.classList.add('hidden');
+                    });
+
+                    // Add active class to clicked button and show corresponding content
+                    this.classList.add('active', 'border-primary', 'text-primary');
+                    this.classList.remove('border-transparent', 'text-text-secondary');
+                    document.getElementById(targetTab).classList.remove('hidden');
+                });
+            });
+
+            // BMI Calculator
+            const calculateBMIBtn = document.getElementById('calculateBMI');
+            const heightInput = document.getElementById('height');
+            const weightInput = document.getElementById('weight');
+            const bmiValue = document.getElementById('bmiValue');
+            const bmiCategory = document.getElementById('bmiCategory');
+
+            function calculateBMI() {
+                const height = parseFloat(heightInput.value) / 100; // Convert cm to m
+                const weight = parseFloat(weightInput.value);
+                
+                if (height && weight) {
+                    const bmi = weight / (height * height);
+                    bmiValue.textContent = bmi.toFixed(1);
+                    
+                    let category = '';
+                    let categoryClass = '';
+                    
+                    if (bmi < 18.5) {
+                        category = 'Underweight';
+                        categoryClass = 'text-warning';
+                    } else if (bmi < 25) {
+                        category = 'Normal Weight';
+                        categoryClass = 'text-success';
+                    } else if (bmi < 30) {
+                        category = 'Overweight';
+                        categoryClass = 'text-warning';
+                    } else {
+                        category = 'Obese';
+                        categoryClass = 'text-error';
+                    }
+                    
+                    bmiCategory.textContent = category;
+                    bmiCategory.className = `text-sm ${categoryClass}`;
+                }
+            }
+
+            calculateBMIBtn.addEventListener('click', calculateBMI);
+            heightInput.addEventListener('input', calculateBMI);
+            weightInput.addEventListener('input', calculateBMI);
+
+            // Save confirmation dialog
+            const saveButton = document.querySelector('button:contains("Save Changes")');
+            const confirmDialog = document.getElementById('confirmDialog');
+            const cancelConfirm = document.getElementById('cancelConfirm');
+            const confirmSave = document.getElementById('confirmSave');
+
+            // Find save button by text content
+            const saveBtn = Array.from(document.querySelectorAll('button')).find(btn => 
+                btn.textContent.includes('Save Changes')
+            );
+
+            if (saveBtn) {
+                saveBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    confirmDialog.classList.remove('hidden');
+                });
+            }
+
+            cancelConfirm.addEventListener('click', function() {
+                confirmDialog.classList.add('hidden');
+            });
+
+            confirmSave.addEventListener('click', function() {
+                confirmDialog.classList.add('hidden');
+                // Here you would typically save the data
+                alert('Patient profile updated successfully!');
+            });
+
+            // Mobile accordion for tabs on small screens
+            function handleMobileAccordion() {
+                if (window.innerWidth < 768) {
+                    tabButtons.forEach(button => {
+                        button.addEventListener('click', function() {
+                            const targetTab = this.getAttribute('data-tab');
+                            const content = document.getElementById(targetTab);
+                            
+                            // Toggle content visibility
+                            if (content.classList.contains('hidden')) {
+                                content.classList.remove('hidden');
+                            } else {
+                                content.classList.add('hidden');
+                            }
+                        });
+                    });
+                }
+            }
+
+            handleMobileAccordion();
+            window.addEventListener('resize', handleMobileAccordion);
+        });
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>

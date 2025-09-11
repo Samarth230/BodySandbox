@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Emergency Response Center - MedInsight AI</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fmedinsight1355back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+<body class="bg-gradient-to-br from-primary-50 to-secondary-50 min-h-screen font-body">
+    <!-- Header Section -->
+    <header class="glass-card border-b border-border-light sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+                        <i class="fas fa-heartbeat text-white text-lg"></i>
+                    </div>
+                    <h1 class="text-xl font-heading font-bold text-text-primary">MedInsight AI</h1>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="main_dashboard.html" class="text-text-secondary hover:text-primary transition-medical">Dashboard</a>
+                    <a href="3d_anatomy_viewer.html" class="text-text-secondary hover:text-primary transition-medical">3D Anatomy</a>
+                    <a href="health_analytics_dashboard.html" class="text-text-secondary hover:text-primary transition-medical">Analytics</a>
+                    <a href="patient_profile_management.html" class="text-text-secondary hover:text-primary transition-medical">Profiles</a>
+                    <a href="emergency_response_center.html" class="text-error font-semibold border-b-2 border-error pb-1">Emergency</a>
+                </nav>
+
+                <!-- Emergency Status Indicator -->
+                <div class="flex items-center space-x-4">
+                    <div id="emergencyStatus" class="flex items-center space-x-2 px-3 py-2 bg-success text-white rounded-lg">
+                        <div class="w-2 h-2 bg-white rounded-full"></div>
+                        <span class="text-sm font-semibold">All Clear</span>
+                    </div>
+                    <button id="soundToggle" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-medical">
+                        <i class="fas fa-volume-up text-text-secondary"></i>
+                    </button>
+                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-white text-sm"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Emergency Alert Banner -->
+        <div id="criticalAlert" class="hidden mb-6 p-6 bg-error text-white rounded-medical shadow-medical-lg">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center pulse-critical">
+                        <i class="fas fa-exclamation-triangle text-white text-2xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-heading font-bold">CRITICAL EMERGENCY ALERT</h2>
+                        <p class="text-lg opacity-90" id="criticalMessage">Multiple vital signs exceed critical thresholds</p>
+                        <p class="text-sm opacity-75" id="criticalTime">Alert triggered at --:--:--</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button id="acknowledgeAlert" class="px-6 py-3 bg-white text-error font-semibold rounded-lg hover:bg-gray-100 transition-medical">
+                        <i class="fas fa-check mr-2"></i>Acknowledge
+                    </button>
+                    <button id="callEmergency" class="px-6 py-3 bg-yellow-500 text-white font-semibold rounded-lg hover:bg-yellow-600 transition-medical">
+                        <i class="fas fa-phone mr-2"></i>Call 911
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Emergency Status Dashboard -->
+        <section class="mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-3xl font-heading font-bold text-text-primary">Emergency Response Center</h2>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2 text-sm text-text-secondary">
+                        <div class="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
+                        <span>Live Monitoring</span>
+                        <span id="currentTime" class="font-data">--:--:--</span>
+                    </div>
+                    <button id="testAlert" class="px-4 py-2 bg-warning text-white rounded-lg hover:bg-orange-600 transition-medical">
+                        <i class="fas fa-bell mr-2"></i>Test Alert
+                    </button>
+                </div>
+            </div>
+
+            <!-- Large Alert Status Panels -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <!-- Critical Status -->
+                <div id="criticalPanel" class="glass-card p-8 rounded-medical border-l-4 border-success text-center">
+                    <div class="w-20 h-20 bg-success-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-shield-alt text-success text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-heading font-bold text-text-primary mb-2">Critical Status</h3>
+                    <p class="text-4xl font-data font-bold text-success mb-2" id="criticalCount">0</p>
+                    <p class="text-text-secondary">Active Critical Alerts</p>
+                    <div class="mt-4 text-sm text-success font-semibold">All Systems Normal</div>
+                </div>
+
+                <!-- Warning Status -->
+                <div id="warningPanel" class="glass-card p-8 rounded-medical border-l-4 border-warning text-center">
+                    <div class="w-20 h-20 bg-warning-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-warning text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-heading font-bold text-text-primary mb-2">Warning Status</h3>
+                    <p class="text-4xl font-data font-bold text-warning mb-2" id="warningCount">2</p>
+                    <p class="text-text-secondary">Active Warning Alerts</p>
+                    <div class="mt-4 text-sm text-warning font-semibold">Elevated Blood Pressure</div>
+                </div>
+
+                <!-- Response Time -->
+                <div class="glass-card p-8 rounded-medical border-l-4 border-primary text-center">
+                    <div class="w-20 h-20 bg-primary-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-stopwatch text-primary text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-heading font-bold text-text-primary mb-2">Response Time</h3>
+                    <p class="text-4xl font-data font-bold text-primary mb-2" id="responseTime">< 30s</p>
+                    <p class="text-text-secondary">Average Alert Response</p>
+                    <div class="mt-4 text-sm text-primary font-semibold">Excellent Performance</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Real-time Vital Signs Monitoring -->
+        <section class="mb-8">
+            <h3 class="text-2xl font-heading font-bold text-text-primary mb-4">Live Vital Signs Monitor</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <!-- Heart Rate Monitor -->
+                <div id="heartRateMonitor" class="glass-card p-4 rounded-medical border-l-4 border-success">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-heartbeat text-success"></i>
+                            <span class="text-sm font-semibold text-text-primary">Heart Rate</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <div class="w-2 h-2 bg-success rounded-full"></div>
+                            <span class="text-xs text-success">Normal</span>
+                        </div>
+                    </div>
+                    <div class="text-3xl font-data font-bold text-text-primary mb-1" id="liveHeartRate">72</div>
+                    <div class="text-xs text-text-secondary mb-2">BPM</div>
+                    <div class="text-xs">
+                        <span class="text-text-secondary">Threshold: </span>
+                        <span class="font-semibold">60-100</span>
+                    </div>
+                </div>
+
+                <!-- Blood Pressure Monitor -->
+                <div id="bloodPressureMonitor" class="glass-card p-4 rounded-medical border-l-4 border-warning">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-tint text-warning"></i>
+                            <span class="text-sm font-semibold text-text-primary">Blood Pressure</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <div class="w-2 h-2 bg-warning rounded-full"></div>
+                            <span class="text-xs text-warning">Elevated</span>
+                        </div>
+                    </div>
+                    <div class="text-3xl font-data font-bold text-text-primary mb-1" id="liveBP">142/88</div>
+                    <div class="text-xs text-text-secondary mb-2">mmHg</div>
+                    <div class="text-xs">
+                        <span class="text-text-secondary">Threshold: </span>
+                        <span class="font-semibold">< 140/90</span>
+                    </div>
+                </div>
+
+                <!-- Oxygen Saturation Monitor -->
+                <div id="oxygenMonitor" class="glass-card p-4 rounded-medical border-l-4 border-success">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-lungs text-success"></i>
+                            <span class="text-sm font-semibold text-text-primary">Oxygen Sat</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <div class="w-2 h-2 bg-success rounded-full"></div>
+                            <span class="text-xs text-success">Normal</span>
+                        </div>
+                    </div>
+                    <div class="text-3xl font-data font-bold text-text-primary mb-1" id="liveOxygen">97</div>
+                    <div class="text-xs text-text-secondary mb-2">%</div>
+                    <div class="text-xs">
+                        <span class="text-text-secondary">Threshold: </span>
+                        <span class="font-semibold">> 95%</span>
+                    </div>
+                </div>
+
+                <!-- Temperature Monitor -->
+                <div id="temperatureMonitor" class="glass-card p-4 rounded-medical border-l-4 border-success">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-thermometer-half text-success"></i>
+                            <span class="text-sm font-semibold text-text-primary">Temperature</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <div class="w-2 h-2 bg-success rounded-full"></div>
+                            <span class="text-xs text-success">Normal</span>
+                        </div>
+                    </div>
+                    <div class="text-3xl font-data font-bold text-text-primary mb-1" id="liveTemp">36.7</div>
+                    <div class="text-xs text-text-secondary mb-2">°C</div>
+                    <div class="text-xs">
+                        <span class="text-text-secondary">Threshold: </span>
+                        <span class="font-semibold">36-37.5°C</span>
+                    </div>
+                </div>
+
+                <!-- Blood Glucose Monitor -->
+                <div id="glucoseMonitor" class="glass-card p-4 rounded-medical border-l-4 border-warning">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-vial text-warning"></i>
+                            <span class="text-sm font-semibold text-text-primary">Glucose</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <div class="w-2 h-2 bg-warning rounded-full"></div>
+                            <span class="text-xs text-warning">Elevated</span>
+                        </div>
+                    </div>
+                    <div class="text-3xl font-data font-bold text-text-primary mb-1" id="liveGlucose">155</div>
+                    <div class="text-xs text-text-secondary mb-2">mg/dL</div>
+                    <div class="text-xs">
+                        <span class="text-text-secondary">Threshold: </span>
+                        <span class="font-semibold">70-140</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Threshold Configuration & Alert History -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <!-- Threshold Configuration -->
+            <div class="glass-card p-6 rounded-medical">
+                <h3 class="text-xl font-heading font-bold text-text-primary mb-4">Threshold Configuration</h3>
+                <div class="space-y-4">
+                    <!-- Heart Rate Thresholds -->
+                    <div class="border-b border-border-light pb-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <label class="text-sm font-semibold text-text-primary">Heart Rate (BPM)</label>
+                            <button class="text-primary hover:text-primary-600 text-sm">
+                                <i class="fas fa-edit mr-1"></i>Edit
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-xs text-text-secondary">Min Threshold</label>
+                                <input type="number" value="60" class="w-full mt-1 px-3 py-2 border border-border-light rounded-lg text-sm" />
+                            </div>
+                            <div>
+                                <label class="text-xs text-text-secondary">Max Threshold</label>
+                                <input type="number" value="100" class="w-full mt-1 px-3 py-2 border border-border-light rounded-lg text-sm" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Blood Pressure Thresholds -->
+                    <div class="border-b border-border-light pb-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <label class="text-sm font-semibold text-text-primary">Blood Pressure (mmHg)</label>
+                            <button class="text-primary hover:text-primary-600 text-sm">
+                                <i class="fas fa-edit mr-1"></i>Edit
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-xs text-text-secondary">Systolic Max</label>
+                                <input type="number" value="140" class="w-full mt-1 px-3 py-2 border border-border-light rounded-lg text-sm" />
+                            </div>
+                            <div>
+                                <label class="text-xs text-text-secondary">Diastolic Max</label>
+                                <input type="number" value="90" class="w-full mt-1 px-3 py-2 border border-border-light rounded-lg text-sm" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Oxygen Saturation Threshold -->
+                    <div class="border-b border-border-light pb-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <label class="text-sm font-semibold text-text-primary">Oxygen Saturation (%)</label>
+                            <button class="text-primary hover:text-primary-600 text-sm">
+                                <i class="fas fa-edit mr-1"></i>Edit
+                            </button>
+                        </div>
+                        <div>
+                            <label class="text-xs text-text-secondary">Min Threshold</label>
+                            <input type="number" value="95" class="w-full mt-1 px-3 py-2 border border-border-light rounded-lg text-sm" />
+                        </div>
+                    </div>
+
+                    <!-- Save Button -->
+                    <button class="w-full px-4 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-600 transition-medical">
+                        <i class="fas fa-save mr-2"></i>Save Threshold Settings
+                    </button>
+                </div>
+            </div>
+
+            <!-- Alert History -->
+            <div class="glass-card p-6 rounded-medical">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-heading font-bold text-text-primary">Alert History</h3>
+                    <div class="flex items-center space-x-2">
+                        <button class="px-3 py-1 text-xs bg-gray-100 text-text-secondary rounded-lg hover:bg-gray-200 transition-medical">
+                            Filter
+                        </button>
+                        <button class="px-3 py-1 text-xs bg-gray-100 text-text-secondary rounded-lg hover:bg-gray-200 transition-medical">
+                            Export
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="space-y-3 max-h-96 overflow-y-auto">
+                    <!-- Critical Alert -->
+                    <div class="p-4 bg-error-50 border-l-4 border-error rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-exclamation-triangle text-error"></i>
+                                <span class="text-sm font-semibold text-text-primary">Critical Alert</span>
+                            </div>
+                            <span class="text-xs text-text-secondary">Today, 09:15 AM</span>
+                        </div>
+                        <p class="text-sm text-text-primary mb-1">Blood glucose exceeded critical threshold</p>
+                        <p class="text-xs text-text-secondary">Value: 185 mg/dL | Threshold: 140 mg/dL</p>
+                        <div class="flex items-center justify-between mt-3">
+                            <span class="text-xs px-2 py-1 bg-error text-white rounded">CRITICAL</span>
+                            <span class="text-xs text-success">Acknowledged by Dr. Smith</span>
+                        </div>
+                    </div>
+
+                    <!-- Warning Alert -->
+                    <div class="p-4 bg-warning-50 border-l-4 border-warning rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-exclamation-triangle text-warning"></i>
+                                <span class="text-sm font-semibold text-text-primary">Warning Alert</span>
+                            </div>
+                            <span class="text-xs text-text-secondary">Today, 08:42 AM</span>
+                        </div>
+                        <p class="text-sm text-text-primary mb-1">Blood pressure elevated above normal</p>
+                        <p class="text-xs text-text-secondary">Value: 142/88 mmHg | Threshold: 140/90 mmHg</p>
+                        <div class="flex items-center justify-between mt-3">
+                            <span class="text-xs px-2 py-1 bg-warning text-white rounded">WARNING</span>
+                            <span class="text-xs text-success">Acknowledged</span>
+                        </div>
+                    </div>
+
+                    <!-- Normal Alert -->
+                    <div class="p-4 bg-success-50 border-l-4 border-success rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-check-circle text-success"></i>
+                                <span class="text-sm font-semibold text-text-primary">System Normal</span>
+                            </div>
+                            <span class="text-xs text-text-secondary">Today, 07:30 AM</span>
+                        </div>
+                        <p class="text-sm text-text-primary mb-1">All vital signs returned to normal range</p>
+                        <p class="text-xs text-text-secondary">Monitoring resumed automatically</p>
+                        <div class="flex items-center justify-between mt-3">
+                            <span class="text-xs px-2 py-1 bg-success text-white rounded">NORMAL</span>
+                            <span class="text-xs text-text-secondary">Auto-resolved</span>
+                        </div>
+                    </div>
+
+                    <!-- Warning Alert -->
+                    <div class="p-4 bg-warning-50 border-l-4 border-warning rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-exclamation-triangle text-warning"></i>
+                                <span class="text-sm font-semibold text-text-primary">Warning Alert</span>
+                            </div>
+                            <span class="text-xs text-text-secondary">Yesterday, 11:20 PM</span>
+                        </div>
+                        <p class="text-sm text-text-primary mb-1">Heart rate below normal threshold</p>
+                        <p class="text-xs text-text-secondary">Value: 58 BPM | Threshold: 60 BPM</p>
+                        <div class="flex items-center justify-between mt-3">
+                            <span class="text-xs px-2 py-1 bg-warning text-white rounded">WARNING</span>
+                            <span class="text-xs text-success">Resolved</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Emergency Contacts & Quick Actions -->
+        <section class="mb-8">
+            <h3 class="text-2xl font-heading font-bold text-text-primary mb-4">Emergency Contacts & Quick Actions</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Emergency Services -->
+                <div class="glass-card p-6 rounded-medical text-center hover:shadow-medical-lg transition-medical hover-lift">
+                    <div class="w-16 h-16 bg-error-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-ambulance text-error text-2xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-text-primary mb-2">Emergency Services</h4>
+                    <p class="text-sm text-text-secondary mb-4">Call 911 immediately</p>
+                    <button class="w-full px-4 py-2 bg-error text-white font-semibold rounded-lg hover:bg-red-600 transition-medical">
+                        <i class="fas fa-phone mr-2"></i>Call 911
+                    </button>
+                </div>
+
+                <!-- Primary Physician -->
+                <div class="glass-card p-6 rounded-medical text-center hover:shadow-medical-lg transition-medical hover-lift">
+                    <div class="w-16 h-16 bg-primary-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-user-md text-primary text-2xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-text-primary mb-2">Dr. Sarah Johnson</h4>
+                    <p class="text-sm text-text-secondary mb-4">Primary Physician</p>
+                    <button class="w-full px-4 py-2 bg-primary text-white font-semibold rounded-lg hover:bg-primary-600 transition-medical">
+                        <i class="fas fa-phone mr-2"></i>Call Doctor
+                    </button>
+                </div>
+
+                <!-- Emergency Contact -->
+                <div class="glass-card p-6 rounded-medical text-center hover:shadow-medical-lg transition-medical hover-lift">
+                    <div class="w-16 h-16 bg-secondary-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-user-friends text-secondary text-2xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-text-primary mb-2">John Smith</h4>
+                    <p class="text-sm text-text-secondary mb-4">Emergency Contact</p>
+                    <button class="w-full px-4 py-2 bg-secondary text-white font-semibold rounded-lg hover:bg-purple-700 transition-medical">
+                        <i class="fas fa-phone mr-2"></i>Call Contact
+                    </button>
+                </div>
+
+                <!-- Hospital -->
+                <div class="glass-card p-6 rounded-medical text-center hover:shadow-medical-lg transition-medical hover-lift">
+                    <div class="w-16 h-16 bg-accent-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-hospital text-accent text-2xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-text-primary mb-2">City General Hospital</h4>
+                    <p class="text-sm text-text-secondary mb-4">Nearest Hospital</p>
+                    <button class="w-full px-4 py-2 bg-accent text-white font-semibold rounded-lg hover:bg-green-600 transition-medical">
+                        <i class="fas fa-phone mr-2"></i>Call Hospital
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- System Status -->
+        <section>
+            <h3 class="text-2xl font-heading font-bold text-text-primary mb-4">System Status</h3>
+            <div class="glass-card p-6 rounded-medical">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Monitoring Status -->
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-success-100 rounded-full mx-auto mb-3 flex items-center justify-center">
+                            <i class="fas fa-heartbeat text-success text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-text-primary mb-1">Monitoring Active</h4>
+                        <p class="text-sm text-success">All sensors connected</p>
+                        <div class="mt-2 text-xs text-text-secondary">Last update: 2 seconds ago</div>
+                    </div>
+
+                    <!-- Alert System -->
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-success-100 rounded-full mx-auto mb-3 flex items-center justify-center">
+                            <i class="fas fa-bell text-success text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-text-primary mb-1">Alert System</h4>
+                        <p class="text-sm text-success">Fully operational</p>
+                        <div class="mt-2 text-xs text-text-secondary">Response time: < 1 second</div>
+                    </div>
+
+                    <!-- Communication -->
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-success-100 rounded-full mx-auto mb-3 flex items-center justify-center">
+                            <i class="fas fa-wifi text-success text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-text-primary mb-1">Communication</h4>
+                        <p class="text-sm text-success">Network stable</p>
+                        <div class="mt-2 text-xs text-text-secondary">Signal strength: Excellent</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Mobile Navigation -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-border-light">
+        <div class="grid grid-cols-5 py-2">
+            <a href="main_dashboard.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <i class="fas fa-tachometer-alt text-lg"></i>
+                <span class="text-xs mt-1">Dashboard</span>
+            </a>
+            <a href="3d_anatomy_viewer.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <i class="fas fa-user-md text-lg"></i>
+                <span class="text-xs mt-1">3D View</span>
+            </a>
+            <a href="health_analytics_dashboard.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <i class="fas fa-chart-line text-lg"></i>
+                <span class="text-xs mt-1">Analytics</span>
+            </a>
+            <a href="patient_profile_management.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <i class="fas fa-users text-lg"></i>
+                <span class="text-xs mt-1">Profiles</span>
+            </a>
+            <a href="emergency_response_center.html" class="flex flex-col items-center py-2 text-error">
+                <i class="fas fa-ambulance text-lg"></i>
+                <span class="text-xs mt-1">Emergency</span>
+            </a>
+        </div>
+    </nav>
+
+    <script>
+        // Emergency Response Center JavaScript
+        let soundEnabled = true;
+        let monitoringActive = true;
+        let criticalAlertActive = false;
+
+        // Vital signs data
+        let vitalSigns = {
+            heartRate: 72,
+            bloodPressure: { systolic: 142, diastolic: 88 },
+            oxygen: 97,
+            temperature: 36.7,
+            glucose: 155
+        };
+
+        // Thresholds
+        const thresholds = {
+            heartRate: { min: 60, max: 100 },
+            bloodPressure: { systolic: 140, diastolic: 90 },
+            oxygen: { min: 95 },
+            temperature: { min: 36.0, max: 37.5 },
+            glucose: { min: 70, max: 140 }
+        };
+
+        // Initialize the emergency center
+        function initializeEmergencyCenter() {
+            updateCurrentTime();
+            updateVitalSigns();
+            checkThresholds();
+            
+            // Update time every second
+            setInterval(updateCurrentTime, 1000);
+            
+            // Update vital signs every 5 seconds
+            setInterval(() => {
+                if (monitoringActive) {
+                    simulateVitalSigns();
+                    updateVitalSigns();
+                    checkThresholds();
+                }
+            }, 5000);
+        }
+
+        // Update current time display
+        function updateCurrentTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = now.toLocaleTimeString();
+        }
+
+        // Simulate vital signs changes
+        function simulateVitalSigns() {
+            // Heart rate variation
+            vitalSigns.heartRate += (Math.random() - 0.5) * 8;
+            vitalSigns.heartRate = Math.max(50, Math.min(120, vitalSigns.heartRate));
+
+            // Blood pressure variation
+            vitalSigns.bloodPressure.systolic += (Math.random() - 0.5) * 10;
+            vitalSigns.bloodPressure.diastolic += (Math.random() - 0.5) * 6;
+            vitalSigns.bloodPressure.systolic = Math.max(100, Math.min(180, vitalSigns.bloodPressure.systolic));
+            vitalSigns.bloodPressure.diastolic = Math.max(60, Math.min(110, vitalSigns.bloodPressure.diastolic));
+
+            // Oxygen variation
+            vitalSigns.oxygen += (Math.random() - 0.5) * 3;
+            vitalSigns.oxygen = Math.max(90, Math.min(100, vitalSigns.oxygen));
+
+            // Temperature variation
+            vitalSigns.temperature += (Math.random() - 0.5) * 0.5;
+            vitalSigns.temperature = Math.max(35.5, Math.min(39.0, vitalSigns.temperature));
+
+            // Glucose variation
+            vitalSigns.glucose += (Math.random() - 0.5) * 20;
+            vitalSigns.glucose = Math.max(60, Math.min(200, vitalSigns.glucose));
+        }
+
+        // Update vital signs display
+        function updateVitalSigns() {
+            document.getElementById('liveHeartRate').textContent = Math.round(vitalSigns.heartRate);
+            document.getElementById('liveBP').textContent = `${Math.round(vitalSigns.bloodPressure.systolic)}/${Math.round(vitalSigns.bloodPressure.diastolic)}`;
+            document.getElementById('liveOxygen').textContent = Math.round(vitalSigns.oxygen);
+            document.getElementById('liveTemp').textContent = vitalSigns.temperature.toFixed(1);
+            document.getElementById('liveGlucose').textContent = Math.round(vitalSigns.glucose);
+        }
+
+        // Check thresholds and update status
+        function checkThresholds() {
+            let criticalCount = 0;
+            let warningCount = 0;
+
+            // Check heart rate
+            const hr = vitalSigns.heartRate;
+            if (hr < thresholds.heartRate.min * 0.8 || hr > thresholds.heartRate.max * 1.2) {
+                criticalCount++;
+                updateMonitorStatus('heartRateMonitor', 'critical');
+            } else if (hr < thresholds.heartRate.min || hr > thresholds.heartRate.max) {
+                warningCount++;
+                updateMonitorStatus('heartRateMonitor', 'warning');
+            } else {
+                updateMonitorStatus('heartRateMonitor', 'normal');
+            }
+
+            // Check blood pressure
+            const sys = vitalSigns.bloodPressure.systolic;
+            const dia = vitalSigns.bloodPressure.diastolic;
+            if (sys > thresholds.bloodPressure.systolic * 1.2 || dia > thresholds.bloodPressure.diastolic * 1.2) {
+                criticalCount++;
+                updateMonitorStatus('bloodPressureMonitor', 'critical');
+            } else if (sys > thresholds.bloodPressure.systolic || dia > thresholds.bloodPressure.diastolic) {
+                warningCount++;
+                updateMonitorStatus('bloodPressureMonitor', 'warning');
+            } else {
+                updateMonitorStatus('bloodPressureMonitor', 'normal');
+            }
+
+            // Check oxygen
+            const o2 = vitalSigns.oxygen;
+            if (o2 < thresholds.oxygen.min * 0.9) {
+                criticalCount++;
+                updateMonitorStatus('oxygenMonitor', 'critical');
+            } else if (o2 < thresholds.oxygen.min) {
+                warningCount++;
+                updateMonitorStatus('oxygenMonitor', 'warning');
+            } else {
+                updateMonitorStatus('oxygenMonitor', 'normal');
+            }
+
+            // Check temperature
+            const temp = vitalSigns.temperature;
+            if (temp < thresholds.temperature.min * 0.95 || temp > thresholds.temperature.max * 1.05) {
+                criticalCount++;
+                updateMonitorStatus('temperatureMonitor', 'critical');
+            } else if (temp < thresholds.temperature.min || temp > thresholds.temperature.max) {
+                warningCount++;
+                updateMonitorStatus('temperatureMonitor', 'warning');
+            } else {
+                updateMonitorStatus('temperatureMonitor', 'normal');
+            }
+
+            // Check glucose
+            const glucose = vitalSigns.glucose;
+            if (glucose < thresholds.glucose.min * 0.8 || glucose > thresholds.glucose.max * 1.3) {
+                criticalCount++;
+                updateMonitorStatus('glucoseMonitor', 'critical');
+            } else if (glucose < thresholds.glucose.min || glucose > thresholds.glucose.max) {
+                warningCount++;
+                updateMonitorStatus('glucoseMonitor', 'warning');
+            } else {
+                updateMonitorStatus('glucoseMonitor', 'normal');
+            }
+
+            // Update status panels
+            updateStatusPanels(criticalCount, warningCount);
+
+            // Show critical alert if needed
+            if (criticalCount > 0 && !criticalAlertActive) {
+                showCriticalAlert();
+            } else if (criticalCount === 0 && criticalAlertActive) {
+                hideCriticalAlert();
+            }
+        }
+
+        // Update monitor status
+        function updateMonitorStatus(monitorId, status) {
+            const monitor = document.getElementById(monitorId);
+            const statusIndicator = monitor.querySelector('.w-2');
+            const statusText = monitor.querySelector('.text-xs');
+
+            // Remove existing classes
+            monitor.className = monitor.className.replace(/border-l-4 border-\w+(-\d+)?/g, '');
+            statusIndicator.className = statusIndicator.className.replace(/bg-\w+(-\d+)?/g, '');
+
+            switch (status) {
+                case 'critical':
+                    monitor.classList.add('border-l-4', 'border-error');
+                    statusIndicator.classList.add('bg-error', 'pulse-critical');
+                    statusText.innerHTML = '<span class="text-error">Critical</span>';
+                    break;
+                case 'warning':
+                    monitor.classList.add('border-l-4', 'border-warning');
+                    statusIndicator.classList.add('bg-warning');
+                    statusText.innerHTML = '<span class="text-warning">Warning</span>';
+                    break;
+                default:
+                    monitor.classList.add('border-l-4', 'border-success');
+                    statusIndicator.classList.add('bg-success');
+                    statusText.innerHTML = '<span class="text-success">Normal</span>';
+            }
+        }
+
+        // Update status panels
+        function updateStatusPanels(criticalCount, warningCount) {
+            document.getElementById('criticalCount').textContent = criticalCount;
+            document.getElementById('warningCount').textContent = warningCount;
+
+            // Update critical panel
+            const criticalPanel = document.getElementById('criticalPanel');
+            if (criticalCount > 0) {
+                criticalPanel.className = criticalPanel.className.replace(/border-l-4 border-\w+(-\d+)?/g, 'border-l-4 border-error');
+                criticalPanel.querySelector('.text-sm').textContent = 'Immediate Attention Required';
+                criticalPanel.querySelector('.text-sm').className = 'text-sm text-error font-semibold';
+            } else {
+                criticalPanel.className = criticalPanel.className.replace(/border-l-4 border-\w+(-\d+)?/g, 'border-l-4 border-success');
+                criticalPanel.querySelector('.text-sm').textContent = 'All Systems Normal';
+                criticalPanel.querySelector('.text-sm').className = 'text-sm text-success font-semibold';
+            }
+
+            // Update emergency status
+            const emergencyStatus = document.getElementById('emergencyStatus');
+            if (criticalCount > 0) {
+                emergencyStatus.className = 'flex items-center space-x-2 px-3 py-2 bg-error text-white rounded-lg pulse-critical';
+                emergencyStatus.innerHTML = '<div class="w-2 h-2 bg-white rounded-full"></div><span class="text-sm font-semibold">EMERGENCY</span>';
+            } else if (warningCount > 0) {
+                emergencyStatus.className = 'flex items-center space-x-2 px-3 py-2 bg-warning text-white rounded-lg';
+                emergencyStatus.innerHTML = '<div class="w-2 h-2 bg-white rounded-full"></div><span class="text-sm font-semibold">Warning</span>';
+            } else {
+                emergencyStatus.className = 'flex items-center space-x-2 px-3 py-2 bg-success text-white rounded-lg';
+                emergencyStatus.innerHTML = '<div class="w-2 h-2 bg-white rounded-full"></div><span class="text-sm font-semibold">All Clear</span>';
+            }
+        }
+
+        // Show critical alert
+        function showCriticalAlert() {
+            criticalAlertActive = true;
+            const alertElement = document.getElementById('criticalAlert');
+            const messageElement = document.getElementById('criticalMessage');
+            const timeElement = document.getElementById('criticalTime');
+
+            messageElement.textContent = 'Multiple vital signs exceed critical thresholds - Immediate medical attention required';
+            timeElement.textContent = `Alert triggered at ${new Date().toLocaleTimeString()}`;
+            
+            alertElement.classList.remove('hidden');
+
+            if (soundEnabled) {
+                // Simulate emergency sound
+                console.log('🚨 CRITICAL EMERGENCY ALERT SOUND');
+            }
+        }
+
+        // Hide critical alert
+        function hideCriticalAlert() {
+            criticalAlertActive = false;
+            document.getElementById('criticalAlert').classList.add('hidden');
+        }
+
+        // Event listeners
+        document.getElementById('soundToggle').addEventListener('click', function() {
+            soundEnabled = !soundEnabled;
+            const icon = this.querySelector('i');
+            icon.className = soundEnabled ? 'fas fa-volume-up text-text-secondary' : 'fas fa-volume-mute text-text-secondary';
+        });
+
+        document.getElementById('testAlert').addEventListener('click', function() {
+            // Simulate critical values for testing
+            vitalSigns.glucose = 190;
+            vitalSigns.bloodPressure.systolic = 180;
+            updateVitalSigns();
+            checkThresholds();
+        });
+
+        document.getElementById('acknowledgeAlert').addEventListener('click', function() {
+            hideCriticalAlert();
+        });
+
+        document.getElementById('callEmergency').addEventListener('click', function() {
+            alert('Emergency services have been contacted. Help is on the way.');
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeEmergencyCenter();
+        });
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>

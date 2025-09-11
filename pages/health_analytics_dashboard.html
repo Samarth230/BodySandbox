@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Health Analytics Dashboard - MedInsight AI</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fmedinsight1355back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+<body class="bg-gradient-to-br from-primary-50 to-secondary-50 min-h-screen font-body">
+    <!-- Header Section -->
+    <header class="glass-card border-b border-border-light sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+                        <i class="fas fa-heartbeat text-white text-lg"></i>
+                    </div>
+                    <h1 class="text-xl font-heading font-bold text-text-primary">MedInsight AI</h1>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="main_dashboard.html" class="text-text-secondary hover:text-primary transition-medical">Dashboard</a>
+                    <a href="3d_anatomy_viewer.html" class="text-text-secondary hover:text-primary transition-medical">3D Anatomy</a>
+                    <a href="health_analytics_dashboard.html" class="text-primary font-semibold border-b-2 border-primary pb-1">Analytics</a>
+                    <a href="patient_profile_management.html" class="text-text-secondary hover:text-primary transition-medical">Profiles</a>
+                    <a href="emergency_response_center.html" class="text-text-secondary hover:text-primary transition-medical">Emergency</a>
+                </nav>
+
+                <!-- Controls -->
+                <div class="flex items-center space-x-4">
+                    <button id="exportReport" class="flex items-center space-x-2 px-3 py-2 bg-accent text-white rounded-lg hover:bg-accent-600 transition-medical">
+                        <i class="fas fa-download text-sm"></i>
+                        <span class="hidden sm:inline text-sm">Export PDF</span>
+                    </button>
+                    <button id="refreshData" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-medical">
+                        <i class="fas fa-sync-alt text-text-secondary"></i>
+                    </button>
+                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-white text-sm"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Page Header -->
+        <div class="mb-6">
+            <h2 class="text-3xl font-heading font-bold text-text-primary mb-2">Health Analytics Dashboard</h2>
+            <p class="text-text-secondary">Comprehensive health trend analysis and personalized insights for long-term health management</p>
+        </div>
+
+        <!-- Time Period Controls -->
+        <section class="mb-8">
+            <div class="glass-card p-4 rounded-medical">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-calendar-alt text-primary"></i>
+                        <span class="font-semibold text-text-primary">Analysis Period:</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="time-period-btn px-4 py-2 bg-gray-100 text-text-secondary rounded-lg hover:bg-primary hover:text-white transition-medical" data-period="1h">1 Hour</button>
+                        <button class="time-period-btn px-4 py-2 bg-gray-100 text-text-secondary rounded-lg hover:bg-primary hover:text-white transition-medical" data-period="6h">6 Hours</button>
+                        <button class="time-period-btn px-4 py-2 bg-primary text-white rounded-lg" data-period="24h">24 Hours</button>
+                        <button class="time-period-btn px-4 py-2 bg-gray-100 text-text-secondary rounded-lg hover:bg-primary hover:text-white transition-medical" data-period="7d">7 Days</button>
+                        <button class="time-period-btn px-4 py-2 bg-gray-100 text-text-secondary rounded-lg hover:bg-primary hover:text-white transition-medical" data-period="30d">30 Days</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Health Score Section -->
+        <section class="mb-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Overall Health Score -->
+                <div class="glass-card p-6 rounded-medical">
+                    <div class="text-center">
+                        <h3 class="text-lg font-heading font-semibold text-text-primary mb-4">Overall Health Score</h3>
+                        <div class="relative w-32 h-32 mx-auto mb-4">
+                            <svg class="w-32 h-32 transform -rotate-90" viewBox="0 0 120 120">
+                                <circle cx="60" cy="60" r="50" stroke="#e5e7eb" stroke-width="8" fill="none"/>
+                                <circle cx="60" cy="60" r="50" stroke="#2ecc71" stroke-width="8" fill="none" stroke-dasharray="314" stroke-dashoffset="94" stroke-linecap="round"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center">
+                                    <div class="text-3xl font-data font-bold text-text-primary">78</div>
+                                    <div class="text-xs text-text-secondary">Good</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-center space-x-2 text-success">
+                            <i class="fas fa-arrow-up text-sm"></i>
+                            <span class="text-sm font-semibold">+5 from last week</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cardiovascular Risk -->
+                <div class="glass-card p-6 rounded-medical">
+                    <div class="text-center">
+                        <h3 class="text-lg font-heading font-semibold text-text-primary mb-4">Cardiovascular Risk</h3>
+                        <div class="relative w-32 h-32 mx-auto mb-4">
+                            <svg class="w-32 h-32 transform -rotate-90" viewBox="0 0 120 120">
+                                <circle cx="60" cy="60" r="50" stroke="#e5e7eb" stroke-width="8" fill="none"/>
+                                <circle cx="60" cy="60" r="50" stroke="#f39c12" stroke-width="8" fill="none" stroke-dasharray="314" stroke-dashoffset="157" stroke-linecap="round"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center">
+                                    <div class="text-3xl font-data font-bold text-text-primary">50</div>
+                                    <div class="text-xs text-text-secondary">Moderate</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-center space-x-2 text-warning">
+                            <i class="fas fa-exclamation-triangle text-sm"></i>
+                            <span class="text-sm font-semibold">Monitor BP levels</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Diabetes Risk -->
+                <div class="glass-card p-6 rounded-medical">
+                    <div class="text-center">
+                        <h3 class="text-lg font-heading font-semibold text-text-primary mb-4">Diabetes Risk</h3>
+                        <div class="relative w-32 h-32 mx-auto mb-4">
+                            <svg class="w-32 h-32 transform -rotate-90" viewBox="0 0 120 120">
+                                <circle cx="60" cy="60" r="50" stroke="#e5e7eb" stroke-width="8" fill="none"/>
+                                <circle cx="60" cy="60" r="50" stroke="#e74c3c" stroke-width="8" fill="none" stroke-dasharray="314" stroke-dashoffset="125" stroke-linecap="round"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center">
+                                    <div class="text-3xl font-data font-bold text-text-primary">60</div>
+                                    <div class="text-xs text-text-secondary">High</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-center space-x-2 text-error">
+                            <i class="fas fa-exclamation-circle text-sm"></i>
+                            <span class="text-sm font-semibold">Glucose elevated</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="mb-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Vital Signs Trends -->
+                <div class="glass-card p-6 rounded-medical">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-heading font-semibold text-text-primary">Vital Signs Trends</h3>
+                        <div class="flex items-center space-x-2">
+                            <button id="vitalSignsZoom" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-medical">
+                                <i class="fas fa-search-plus text-text-secondary text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="h-64">
+                        <canvas id="vitalSignsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Sleep Patterns -->
+                <div class="glass-card p-6 rounded-medical">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-heading font-semibold text-text-primary">Sleep Patterns</h3>
+                        <div class="flex items-center space-x-2">
+                            <button id="sleepZoom" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-medical">
+                                <i class="fas fa-search-plus text-text-secondary text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="h-64">
+                        <canvas id="sleepChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Activity Levels -->
+                <div class="glass-card p-6 rounded-medical">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-heading font-semibold text-text-primary">Activity Levels</h3>
+                        <div class="flex items-center space-x-2">
+                            <button id="activityZoom" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-medical">
+                                <i class="fas fa-search-plus text-text-secondary text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="h-64">
+                        <canvas id="activityChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Stress Monitoring -->
+                <div class="glass-card p-6 rounded-medical">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-heading font-semibold text-text-primary">Stress Monitoring</h3>
+                        <div class="flex items-center space-x-2">
+                            <button id="stressZoom" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-medical">
+                                <i class="fas fa-search-plus text-text-secondary text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="h-64">
+                        <canvas id="stressChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Health Goals Progress -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-heading font-bold text-text-primary mb-4">Health Goals Progress</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Weight Goal -->
+                <div class="glass-card p-4 rounded-medical">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-weight text-primary"></i>
+                            <span class="font-semibold text-text-primary text-sm">Weight Goal</span>
+                        </div>
+                        <span class="text-xs text-text-secondary">75kg target</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                        <div class="bg-primary h-2 rounded-full" style="width: 68%"></div>
+                    </div>
+                    <div class="flex justify-between text-xs text-text-secondary">
+                        <span>Current: 78kg</span>
+                        <span>68% to goal</span>
+                    </div>
+                </div>
+
+                <!-- Exercise Goal -->
+                <div class="glass-card p-4 rounded-medical">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-running text-accent"></i>
+                            <span class="font-semibold text-text-primary text-sm">Exercise Goal</span>
+                        </div>
+                        <span class="text-xs text-text-secondary">150min/week</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                        <div class="bg-accent h-2 rounded-full" style="width: 85%"></div>
+                    </div>
+                    <div class="flex justify-between text-xs text-text-secondary">
+                        <span>This week: 128min</span>
+                        <span>85% complete</span>
+                    </div>
+                </div>
+
+                <!-- Sleep Goal -->
+                <div class="glass-card p-4 rounded-medical">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-moon text-secondary"></i>
+                            <span class="font-semibold text-text-primary text-sm">Sleep Goal</span>
+                        </div>
+                        <span class="text-xs text-text-secondary">8hrs/night</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                        <div class="bg-secondary h-2 rounded-full" style="width: 72%"></div>
+                    </div>
+                    <div class="flex justify-between text-xs text-text-secondary">
+                        <span>Avg: 5.8hrs</span>
+                        <span>72% of goal</span>
+                    </div>
+                </div>
+
+                <!-- Hydration Goal -->
+                <div class="glass-card p-4 rounded-medical">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-tint text-blue-500"></i>
+                            <span class="font-semibold text-text-primary text-sm">Hydration</span>
+                        </div>
+                        <span class="text-xs text-text-secondary">2L/day</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                        <div class="bg-blue-500 h-2 rounded-full" style="width: 92%"></div>
+                    </div>
+                    <div class="flex justify-between text-xs text-text-secondary">
+                        <span>Today: 1.8L</span>
+                        <span>92% complete</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Personalized Health Tips -->
+        <section class="mb-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Health Tips -->
+                <div class="glass-card p-6 rounded-medical">
+                    <h3 class="text-lg font-heading font-semibold text-text-primary mb-4 flex items-center">
+                        <i class="fas fa-lightbulb text-warning mr-2"></i>
+                        Personalized Health Tips
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-warning-50 rounded-lg border-l-4 border-warning">
+                            <h4 class="font-semibold text-text-primary text-sm mb-2">Blood Glucose Management</h4>
+                            <p class="text-sm text-text-secondary">Your glucose levels have been elevated. Consider reducing refined carbohydrates and increasing fiber intake. Monitor levels 2 hours after meals.</p>
+                        </div>
+                        <div class="p-4 bg-primary-50 rounded-lg border-l-4 border-primary">
+                            <h4 class="font-semibold text-text-primary text-sm mb-2">Sleep Quality Improvement</h4>
+                            <p class="text-sm text-text-secondary">Your sleep duration is below optimal. Try establishing a consistent bedtime routine and avoiding screens 1 hour before sleep.</p>
+                        </div>
+                        <div class="p-4 bg-accent-50 rounded-lg border-l-4 border-accent">
+                            <h4 class="font-semibold text-text-primary text-sm mb-2">Exercise Recommendation</h4>
+                            <p class="text-sm text-text-secondary">Great progress on your exercise goals! Consider adding 2 strength training sessions per week to complement your cardio routine.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Risk Factors -->
+                <div class="glass-card p-6 rounded-medical">
+                    <h3 class="text-lg font-heading font-semibold text-text-primary mb-4 flex items-center">
+                        <i class="fas fa-shield-alt text-error mr-2"></i>
+                        Risk Assessment
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-3 bg-error-50 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-3 h-3 bg-error rounded-full"></div>
+                                <div>
+                                    <p class="font-semibold text-text-primary text-sm">High Glucose Levels</p>
+                                    <p class="text-xs text-text-secondary">Requires immediate attention</p>
+                                </div>
+                            </div>
+                            <span class="text-error font-semibold text-sm">HIGH</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-warning-50 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-3 h-3 bg-warning rounded-full"></div>
+                                <div>
+                                    <p class="font-semibold text-text-primary text-sm">Elevated Blood Pressure</p>
+                                    <p class="text-xs text-text-secondary">Monitor regularly</p>
+                                </div>
+                            </div>
+                            <span class="text-warning font-semibold text-sm">MODERATE</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-success-50 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-3 h-3 bg-success rounded-full"></div>
+                                <div>
+                                    <p class="font-semibold text-text-primary text-sm">Heart Rate Variability</p>
+                                    <p class="text-xs text-text-secondary">Within normal range</p>
+                                </div>
+                            </div>
+                            <span class="text-success font-semibold text-sm">LOW</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparative Analysis -->
+        <section>
+            <h2 class="text-2xl font-heading font-bold text-text-primary mb-4">Comparative Analysis</h2>
+            <div class="glass-card p-6 rounded-medical">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-heading font-semibold text-text-primary">Progress vs Peer Benchmarks</h3>
+                    <div class="text-xs text-text-secondary">
+                        <i class="fas fa-shield-alt mr-1"></i>
+                        Privacy-compliant anonymized data
+                    </div>
+                </div>
+                <div class="h-64">
+                    <canvas id="comparativeChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Mobile Navigation -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-border-light">
+        <div class="grid grid-cols-5 py-2">
+            <a href="main_dashboard.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <i class="fas fa-tachometer-alt text-lg"></i>
+                <span class="text-xs mt-1">Dashboard</span>
+            </a>
+            <a href="3d_anatomy_viewer.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <i class="fas fa-user-md text-lg"></i>
+                <span class="text-xs mt-1">3D View</span>
+            </a>
+            <a href="health_analytics_dashboard.html" class="flex flex-col items-center py-2 text-primary">
+                <i class="fas fa-chart-line text-lg"></i>
+                <span class="text-xs mt-1">Analytics</span>
+            </a>
+            <a href="patient_profile_management.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <i class="fas fa-users text-lg"></i>
+                <span class="text-xs mt-1">Profiles</span>
+            </a>
+            <a href="emergency_response_center.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <i class="fas fa-ambulance text-lg"></i>
+                <span class="text-xs mt-1">Emergency</span>
+            </a>
+        </div>
+    </nav>
+
+    <script>
+        // Chart instances
+        let vitalSignsChart, sleepChart, activityChart, stressChart, comparativeChart;
+        let currentPeriod = '24h';
+
+        // Initialize all charts
+        function initializeCharts() {
+            initVitalSignsChart();
+            initSleepChart();
+            initActivityChart();
+            initStressChart();
+            initComparativeChart();
+        }
+
+        // Vital Signs Chart
+        function initVitalSignsChart() {
+            const ctx = document.getElementById('vitalSignsChart').getContext('2d');
+            vitalSignsChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: generateTimeLabels(24),
+                    datasets: [{
+                        label: 'Heart Rate (BPM)',
+                        data: generateVitalData(24, 'heartRate'),
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.4
+                    }, {
+                        label: 'Blood Pressure (Systolic)',
+                        data: generateVitalData(24, 'bloodPressure'),
+                        borderColor: '#8e44ad',
+                        backgroundColor: 'rgba(142, 68, 173, 0.1)',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.4
+                    }, {
+                        label: 'Oxygen Saturation (%)',
+                        data: generateVitalData(24, 'oxygen'),
+                        borderColor: '#2ecc71',
+                        backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                            titleColor: '#2c3e50',
+                            bodyColor: '#2c3e50',
+                            borderColor: '#e5e7eb',
+                            borderWidth: 1
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    },
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeInOutQuart'
+                    }
+                }
+            });
+        }
+
+        // Sleep Chart
+        function initSleepChart() {
+            const ctx = document.getElementById('sleepChart').getContext('2d');
+            sleepChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Sleep Duration (hours)',
+                        data: [6.5, 7.2, 5.8, 6.1, 7.5, 8.2, 7.8],
+                        backgroundColor: 'rgba(142, 68, 173, 0.7)',
+                        borderColor: '#8e44ad',
+                        borderWidth: 1
+                    }, {
+                        label: 'Deep Sleep (hours)',
+                        data: [1.8, 2.1, 1.5, 1.7, 2.3, 2.8, 2.5],
+                        backgroundColor: 'rgba(52, 152, 219, 0.7)',
+                        borderColor: '#3498db',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10
+                        }
+                    },
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeInOutQuart'
+                    }
+                }
+            });
+        }
+
+        // Activity Chart
+        function initActivityChart() {
+            const ctx = document.getElementById('activityChart').getContext('2d');
+            activityChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Active', 'Light Activity', 'Sedentary'],
+                    datasets: [{
+                        data: [25, 35, 40],
+                        backgroundColor: [
+                            '#2ecc71',
+                            '#f39c12',
+                            '#e74c3c'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeInOutQuart'
+                    }
+                }
+            });
+        }
+
+        // Stress Chart
+        function initStressChart() {
+            const ctx = document.getElementById('stressChart').getContext('2d');
+            stressChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: generateTimeLabels(24),
+                    datasets: [{
+                        label: 'Stress Level',
+                        data: generateStressData(24),
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    if (value <= 30) return 'Low';
+                                    if (value <= 60) return 'Moderate';
+                                    return 'High';
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeInOutQuart'
+                    }
+                }
+            });
+        }
+
+        // Comparative Chart
+        function initComparativeChart() {
+            const ctx = document.getElementById('comparativeChart').getContext('2d');
+            comparativeChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Cardiovascular', 'Respiratory', 'Metabolic', 'Sleep Quality', 'Activity Level', 'Stress Management'],
+                    datasets: [{
+                        label: 'Your Score',
+                        data: [78, 85, 60, 72, 85, 68],
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                        borderWidth: 2
+                    }, {
+                        label: 'Peer Average',
+                        data: [75, 80, 75, 78, 70, 72],
+                        borderColor: '#95a5a6',
+                        backgroundColor: 'rgba(149, 165, 166, 0.2)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    },
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeInOutQuart'
+                    }
+                }
+            });
+        }
+
+        // Data generation functions
+        function generateTimeLabels(hours) {
+            const labels = [];
+            const now = new Date();
+            for (let i = hours - 1; i >= 0; i--) {
+                const time = new Date(now.getTime() - i * 60 * 60 * 1000);
+                labels.push(time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }));
+            }
+            return labels;
+        }
+
+        function generateVitalData(count, type) {
+            const data = [];
+            let baseValue;
+            let variance;
+            
+            switch(type) {
+                case 'heartRate':
+                    baseValue = 72;
+                    variance = 15;
+                    break;
+                case 'bloodPressure':
+                    baseValue = 128;
+                    variance = 20;
+                    break;
+                case 'oxygen':
+                    baseValue = 98;
+                    variance = 3;
+                    break;
+            }
+            
+            for (let i = 0; i < count; i++) {
+                const value = baseValue + (Math.random() - 0.5) * variance;
+                data.push(Math.round(value * 10) / 10);
+            }
+            return data;
+        }
+
+        function generateStressData(count) {
+            const data = [];
+            let baseStress = 40;
+            for (let i = 0; i < count; i++) {
+                baseStress += (Math.random() - 0.5) * 20;
+                baseStress = Math.max(10, Math.min(90, baseStress));
+                data.push(Math.round(baseStress));
+            }
+            return data;
+        }
+
+        // Time period controls
+        function setupTimePeriodControls() {
+            const buttons = document.querySelectorAll('.time-period-btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Update active state
+                    buttons.forEach(btn => {
+                        btn.classList.remove('bg-primary', 'text-white');
+                        btn.classList.add('bg-gray-100', 'text-text-secondary');
+                    });
+                    this.classList.remove('bg-gray-100', 'text-text-secondary');
+                    this.classList.add('bg-primary', 'text-white');
+                    
+                    // Update current period
+                    currentPeriod = this.dataset.period;
+                    updateChartsForPeriod(currentPeriod);
+                });
+            });
+        }
+
+        function updateChartsForPeriod(period) {
+            // Update chart data based on selected period
+            let dataPoints;
+            switch(period) {
+                case '1h':
+                    dataPoints = 12; // 5-minute intervals
+                    break;
+                case '6h':
+                    dataPoints = 24; // 15-minute intervals
+                    break;
+                case '24h':
+                    dataPoints = 24; // 1-hour intervals
+                    break;
+                case '7d':
+                    dataPoints = 7; // daily
+                    break;
+                case '30d':
+                    dataPoints = 30; // daily
+                    break;
+            }
+            
+            // Update vital signs chart
+            vitalSignsChart.data.labels = generateTimeLabels(dataPoints);
+            vitalSignsChart.data.datasets[0].data = generateVitalData(dataPoints, 'heartRate');
+            vitalSignsChart.data.datasets[1].data = generateVitalData(dataPoints, 'bloodPressure');
+            vitalSignsChart.data.datasets[2].data = generateVitalData(dataPoints, 'oxygen');
+            vitalSignsChart.update('active');
+            
+            // Update stress chart
+            stressChart.data.labels = generateTimeLabels(dataPoints);
+            stressChart.data.datasets[0].data = generateStressData(dataPoints);
+            stressChart.update('active');
+        }
+
+        // Export functionality
+        function setupExportFunctionality() {
+            document.getElementById('exportReport').addEventListener('click', function() {
+                // Simulate PDF export
+                this.innerHTML = '<i class="fas fa-spinner fa-spin text-sm"></i><span class="hidden sm:inline text-sm ml-2">Generating...</span>';
+                
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-check text-sm"></i><span class="hidden sm:inline text-sm ml-2">Downloaded</span>';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-download text-sm"></i><span class="hidden sm:inline text-sm ml-2">Export PDF</span>';
+                    }, 2000);
+                }, 1500);
+            });
+        }
+
+        // Refresh functionality
+        function setupRefreshFunctionality() {
+            document.getElementById('refreshData').addEventListener('click', function() {
+                const icon = this.querySelector('i');
+                icon.classList.add('fa-spin');
+                
+                setTimeout(() => {
+                    // Update all charts with new data
+                    updateChartsForPeriod(currentPeriod);
+                    icon.classList.remove('fa-spin');
+                }, 1000);
+            });
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCharts();
+            setupTimePeriodControls();
+            setupExportFunctionality();
+            setupRefreshFunctionality();
+        });
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>
